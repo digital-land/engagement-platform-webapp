@@ -1,0 +1,10 @@
+<h1>About Conservation Areas (data pulled from planning.data.gov.uk)</h1>
+
+<table>
+    {% for key in conservationAreaDetail %}
+        <tr>
+            <th>{{key}}</th>
+            <th>{{conservationAreaDetail[key]}}</th>
+        </tr>
+    {% endfor %}
+</table>
