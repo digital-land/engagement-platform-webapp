@@ -1,0 +1,29 @@
+.table {
+
+    border: solid black 2px;
+
+    .table-column {
+        border-right: 1px solid black;
+        &:nth-last-child(1){
+            border-right: 0px solid black;
+        }
+        padding: 5px;
+    }
+
+    .table-row {
+        &:nth-child(2n){
+            background-color: lightgrey;
+        }
+        display: grid;
+        grid-template-columns: repeat(16, 1fr);
+        text-align: center;
+        justify-content: center;
+    }
+
+    .header-row {
+        border-bottom: 1px solid black;
+    }
+}
+
+
+
