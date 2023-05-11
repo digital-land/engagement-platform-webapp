@@ -7,7 +7,7 @@
       border-right: 0px solid black; }
   .table .table-row {
     display: grid;
-    grid-template-columns: repeat(16, 1fr);
+    grid-template-columns: repeat(9, 10%);
     text-align: center;
     justify-content: center; }
     .table .table-row:nth-child(2n) {

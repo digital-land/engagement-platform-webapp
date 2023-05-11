@@ -1,8 +1,11 @@
 from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, File, UploadFile
 from application.core.utils import makeRequest
+from application.core.polygonHelp import points
 from fastapi.responses import RedirectResponse
 import httpx
+import os
+import json
 
 templates = Jinja2Templates("application/templates")
 router = APIRouter()
@@ -31,8 +34,17 @@ async def uploadFile(file: UploadFile = File(...)):
 
 @router.get('/report')
 async def report(request: Request):
+    with open(os.path.join('application/assets/mockdata', 'conservationAreas.json'), 'r') as file:
+        filecontent = file.read()
+        data = json.loads(filecontent)
+        print(data[0])
+    
+    for index, row in enumerate(data):
+        data[index]['Geometry'] = points(row['Geometry'])
+
     template = 'validation/report.html'
     context = {
-        'request': request, 
+        'request': request,
+        'data': data
     }
     return templates.TemplateResponse(template,context)

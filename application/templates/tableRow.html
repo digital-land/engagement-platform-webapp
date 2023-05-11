@@ -1,0 +1,32 @@
+{% from "polygonSvg.html" import polygonSvg %}
+{% macro tableRow(dataPoint) %}
+    <div class="table-row">
+        <div class="table-column">
+            {{dataPoint['Reference']}}
+        </div>
+        <div class="table-column">
+            {{dataPoint['Name']}}
+        </div>
+        <div class="table-column">
+            {{ polygonSvg(dataPoint['Geometry']) }}
+        </div>
+        <div class="table-column">
+            {{dataPoint['Start date']}}
+        </div>
+        <div class="table-column">
+            {{dataPoint['Legislation']}}
+        </div>
+        <div class="table-column">
+            {{dataPoint['Notes']}}
+        </div>
+        <div class="table-column">
+            {{dataPoint['Point']}}
+        </div>
+        <div class="table-column">
+            {{dataPoint['End date']}}
+        </div>
+        <div class="table-column">
+            <a href="{{dataPoint['Document URL']}}">{{dataPoint['Document URL']}}</a>
+        </div>
+    </div>
+{% endmacro %}
