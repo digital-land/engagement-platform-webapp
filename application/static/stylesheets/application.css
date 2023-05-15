@@ -1,16 +1,25 @@
-.table {
-  border: solid black 2px; }
-  .table .table-column {
-    border-right: 1px solid black;
-    padding: 5px; }
-    .table .table-column:nth-last-child(1) {
-      border-right: 0px solid black; }
-  .table .table-row {
-    display: grid;
-    grid-template-columns: repeat(9, 10%);
-    text-align: center;
-    justify-content: center; }
-    .table .table-row:nth-child(2n) {
-      background-color: lightgrey; }
-  .table .header-row {
-    border-bottom: 1px solid black; }
+body {
+  padding: 0em 5em; }
+
+  .table {
+    border: solid black 2px; }
+    .table .table-row {
+      padding: 1em;
+      border-bottom: solid black 1px; }
+      .table .map {
+        margin-bottom: 1em; }
+        .table .attribute {
+          display: block;
+          width: 500px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap; }
+          .table .errors {
+            color: red;
+            display: block;
+            width: 500px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap; }
+            .table .errors .error {
+              margin: 0em 0em 1em 1em; }

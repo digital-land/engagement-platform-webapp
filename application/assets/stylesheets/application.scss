@@ -1,27 +1,47 @@
+body {
+    padding: 0em 5em;
+}
+
 .table {
 
     border: solid black 2px;
 
     .table-column {
-        border-right: 1px solid black;
-        &:nth-last-child(1){
-            border-right: 0px solid black;
-        }
-        padding: 5px;
+        
     }
 
     .table-row {
-        &:nth-child(2n){
-            background-color: lightgrey;
-        }
-        display: grid;
-        grid-template-columns: repeat(9, 10%);
-        text-align: center;
-        justify-content: center;
+       padding: 1em;
+       border-bottom: solid black 1px;
     }
 
     .header-row {
-        border-bottom: 1px solid black;
+        
+    }
+
+    .map {
+        margin-bottom: 1em;
+    }
+
+    .attribute {
+        display: block;
+        width: 500px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .errors {
+        color: red;
+        display: block;
+        width: 500px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        .error {
+            margin: 0em 0em 1em 1em;
+        }
     }
 }
 

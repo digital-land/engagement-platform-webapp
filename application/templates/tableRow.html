@@ -1,32 +1,42 @@
 {% from "polygonSvg.html" import polygonSvg %}
+{% from "mapLeaflet.html" import dlLeafletMap %}
+
 {% macro tableRow(dataPoint) %}
     <div class="table-row">
-        <div class="table-column">
-            {{dataPoint['Reference']}}
+        <div class="Title">
+            <h2>{{dataPoint['attributes']['Reference']}} - {{dataPoint['attributes']['Name']}}</h2>
         </div>
-        <div class="table-column">
-            {{dataPoint['Name']}}
+        <div class="map">
+            {{ dlLeafletMap(dataPoint['attributes']['Reference'], dataPoint['attributes']['Geometry'], dataPoint['attributes']['Point'], dataPoint['mapData']['bounds']) }}
         </div>
-        <div class="table-column">
-            {{ polygonSvg(dataPoint['Geometry']) }}
+        <div class="attributes">
+            {% for key in dataPoint['attributes'] %}
+                <div class="attribute">
+                    {{key}}: {{dataPoint['attributes'][key]}}
+                </div>
+            {% endfor %}
         </div>
-        <div class="table-column">
-            {{dataPoint['Start date']}}
-        </div>
-        <div class="table-column">
-            {{dataPoint['Legislation']}}
-        </div>
-        <div class="table-column">
-            {{dataPoint['Notes']}}
-        </div>
-        <div class="table-column">
-            {{dataPoint['Point']}}
-        </div>
-        <div class="table-column">
-            {{dataPoint['End date']}}
-        </div>
-        <div class="table-column">
-            <a href="{{dataPoint['Document URL']}}">{{dataPoint['Document URL']}}</a>
+        <div class="errors">
+            <h3>Errors:</h3>
+            {% for error in dataPoint['errors'] %}
+                <div class="error">
+                    <div class='field'>
+                        Code: {{error['errorCode']}}
+                    </div>
+                    <div class="field">
+                        Message: {{error['errorMessage']}}
+                    </div>
+                    <div class='field'>
+                        Column Names: {{error['columnNames']}}
+                    </div>
+                    <div class='field'>
+                        Scope/Level: {{error['scope']}}/{{error['level']}}
+                    </div>
+                    <div class='field'>
+                        URI: <a href="{{error['url']}}">{{error['url']}}</a>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endmacro %}

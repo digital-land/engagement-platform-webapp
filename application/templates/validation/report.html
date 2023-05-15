@@ -3,79 +3,87 @@
 <html>
     <head>
         <link rel="stylesheet" href="/static/stylesheets/application.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+        crossorigin=""></script>
+        <script>
+            const initMap = (id, Geometry, centre_x, centre_y, bounds) => {
+                console.log(`init ${id}`);
+                var map = L.map(`${id}`, {
+                    attributionControl: false, 
+                    zoomControl: false,    
+                    dragging: false,
+                    scrollWheelZoom: 'center'
+                }).setView([centre_x, centre_y], 12);
+                map.dragging.disable();
+                map.touchZoom.disable();
+                map.doubleClickZoom.disable();
+                map.scrollWheelZoom.disable();
+                map.boxZoom.disable();
+                map.keyboard.disable();
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+                map.fitBounds(JSON.parse(bounds))
+                console.log(Geometry)
+                var polygon = L.geoJSON(
+                    {
+                        "type": "Polygon",
+                        "coordinates": JSON.parse(Geometry)
+                    }).addTo(map);
+                console.log('done');
+            }
+        </script>
     </head>
-    <h1>Validate your data</h1>
-    <div>
+    <body>
+        <h1>Validate your data</h1>
         <div>
-            <h2>Good table</h2>
-            <div class="table">
-                <div class="table-row header-row">
-                    <div class="table-column">
-                        Row Number
-                    </div>
-                    <div class="table-column">
-                        Name
-                    </div>
-                    <div class="table-column">
-                        Geometry
-                    </div>
-                    <div class="table-column">
-                        Start date
-                    </div>
-                    <div class="table-column">
-                        Legislation
-                    </div>
-                    <div class="table-column">
-                        Notes
-                    </div>
-                    <div class="table-column">
-                        Point
-                    </div>
-                    <div class="table-column">
-                        End date
-                    </div>
-                    <div class="table-column">
-                        Document URL
-                    </div>
+            <div>
+                <h2>Good table</h2>
+                <div class="table">
+                    {% for row in data %}
+                        {{ tableRow(row) }}
+                    {% endfor %}
                 </div>
-                {% for row in data %}
-                    {{ tableRow(row) }}
-                {% endfor %}
             </div>
-        </div>
-        <div>
-            <h2>Bad table</h2>
-            <div class="table">
-                <div class="table-row header-row">
-                    <div class="table-column">
-                        Row Number
-                    </div>
-                    <div class="table-column">
-                        Name
-                    </div>
-                    <div class="table-column">
-                        Geometry
-                    </div>
-                    <div class="table-column">
-                        Start date
-                    </div>
-                    <div class="table-column">
-                        Legislation
-                    </div>
-                    <div class="table-column">
-                        Notes
-                    </div>
-                    <div class="table-column">
-                        Point
-                    </div>
-                    <div class="table-column">
-                        End date
-                    </div>
-                    <div class="table-column">
-                        Document URL
+            <div>
+                <h2>Bad table</h2>
+                <div class="table">
+                    <div class="table-row header-row">
+                        <div class="table-column">
+                            Row Number
+                        </div>
+                        <div class="table-column">
+                            Name
+                        </div>
+                        <div class="table-column">
+                            Geometry
+                        </div>
+                        <div class="table-column">
+                            Start date
+                        </div>
+                        <div class="table-column">
+                            Legislation
+                        </div>
+                        <div class="table-column">
+                            Notes
+                        </div>
+                        <div class="table-column">
+                            Point
+                        </div>
+                        <div class="table-column">
+                            End date
+                        </div>
+                        <div class="table-column">
+                            Document URL
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </body>
 </html>
