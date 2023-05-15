@@ -15,6 +15,7 @@ from shapely.geometry import mapping
 templates = Jinja2Templates("application/templates")
 router = APIRouter()
 
+@router.get('/')
 @router.get('/upload')
 async def upload(request: Request):
     # cmsResponse = await makeRequest(cmsUrl)
@@ -25,7 +26,7 @@ async def upload(request: Request):
     }
     return templates.TemplateResponse(template,context)
 
-@router.post('/uploadFile')
+@router.post('/report')
 async def uploadFile(request: Request, file: UploadFile = File(...)):
     # return RedirectResponse('/validation/report?filename='+file.filename, status_code=303)
 
