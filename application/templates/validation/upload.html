@@ -1,5 +1,5 @@
-<h1>Validate your data</h1>
-<p>This tool will help you ......</p>
+<h1>{{content['title'] | safe}}</h1>
+{{content['description'] | safe}}
 
 <form action="report" method="POST" enctype="multipart/form-data">
     <input type="file" id="file" name="file">

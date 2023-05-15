@@ -40,48 +40,14 @@
         </script>
     </head>
     <body>
-        <h1>Validate your data</h1>
+        <h1>{{content['title']}}</h1>
+        {{content['description'] | safe}}
         <div>
             <div>
-                <h2>Good table</h2>
                 <div class="table">
                     {% for row in data %}
                         {{ tableRow(row) }}
                     {% endfor %}
-                </div>
-            </div>
-            <div>
-                <h2>Bad table</h2>
-                <div class="table">
-                    <div class="table-row header-row">
-                        <div class="table-column">
-                            Row Number
-                        </div>
-                        <div class="table-column">
-                            Name
-                        </div>
-                        <div class="table-column">
-                            Geometry
-                        </div>
-                        <div class="table-column">
-                            Start date
-                        </div>
-                        <div class="table-column">
-                            Legislation
-                        </div>
-                        <div class="table-column">
-                            Notes
-                        </div>
-                        <div class="table-column">
-                            Point
-                        </div>
-                        <div class="table-column">
-                            End date
-                        </div>
-                        <div class="table-column">
-                            Document URL
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

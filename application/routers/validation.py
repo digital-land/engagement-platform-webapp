@@ -11,30 +11,20 @@ import json
 import pandas as pd
 import shapely.wkt
 from shapely.geometry import mapping
+import urllib
 
 templates = Jinja2Templates("application/templates")
 router = APIRouter()
 
-@router.get('/')
-@router.get('/upload')
-async def upload(request: Request):
-    # cmsResponse = await makeRequest(cmsUrl)
-    # conservationAreaDetailResponse = await makeRequest(conservationAreaUrl)
-    template = 'validation/upload.html'
-    context = {
-        'request': request, 
-    }
-    return templates.TemplateResponse(template,context)
+cmsUrl = 'http://localhost:8000/api/v2/pages/{0}/?format=json'
 
-@router.post('/report')
-async def uploadFile(request: Request, file: UploadFile = File(...)):
-    # return RedirectResponse('/validation/report?filename='+file.filename, status_code=303)
+async def getPageContent(pageId):
+    url = cmsUrl.format(pageId)
+    response = await makeRequest(url)
+    return json.loads(response)
+    
 
-    async with httpx.AsyncClient() as client:
-        response = await client.post('http://127.0.0.1:5000/validate', files={'file': (file.filename, file.file)})
-
-    errors = response.json()
-
+def parseCsv(file):
     file.file.seek(0)
     contents = file.file.read().decode("utf-8")
 
@@ -55,8 +45,10 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
                     'errors': []
                 })
             data[row_i - 1]['attributes'][column[0]] = row_v
+    
+    return data
 
-
+def formatData(data):
     for index, row in enumerate(data):
         polygon = shapely.wkt.loads(row['attributes']['Geometry'])
         polygons = mapping(polygon)['coordinates']
@@ -64,6 +56,36 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
         point = shapely.wkt.loads(row['attributes']['Point'])
         data[index]['attributes']['Point'] = [point.x, point.y]
         data[index]['mapData']['bounds'] = [[polygon.bounds[1], polygon.bounds[0]],[polygon.bounds[3], polygon.bounds[2]]]
+    return data
+
+async def validateFile(file):
+    async with httpx.AsyncClient() as client:
+        response = await client.post('http://127.0.0.1:5000/validate', files={'file': (file.filename, file.file)})
+        return response
+
+@router.get('/')
+@router.get('/upload')
+async def upload(request: Request):
+    content = await getPageContent(6)
+
+    template = 'validation/upload.html'
+    context = {
+        'request': request,
+        'content': content,
+    }
+    return templates.TemplateResponse(template,context)
+
+@router.post('/report')
+async def uploadFile(request: Request, file: UploadFile = File(...)):
+    content = await getPageContent(7)
+
+    data = parseCsv(file)
+
+    data = formatData(data)
+
+    response = await validateFile(file)
+
+    errors = response.json()
 
     for error in errors:
         data[error['rowNumber'] - 1]['errors'].append(error)
@@ -73,6 +95,7 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
         context = {
             'request': request,
             'data': data,
+            'content': content,
         }
         return templates.TemplateResponse(template,context)
     else:
