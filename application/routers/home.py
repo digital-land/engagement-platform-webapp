@@ -4,10 +4,11 @@ from fastapi import APIRouter, Request
 templates = Jinja2Templates("application/templates")
 router = APIRouter()
 
-@router.get('/')
+
+@router.get("/")
 async def f(request: Request):
-    template = 'home/home.html'
+    template = "home/home.html"
     context = {
-        'request': request, 
+        "request": request,
     }
-    return templates.TemplateResponse(template,context)
+    return templates.TemplateResponse(template, context)

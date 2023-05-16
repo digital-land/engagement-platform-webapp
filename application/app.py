@@ -3,10 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from time import time
 import asyncio
 import json
-from application.routers import (
-    validation,
-    home
-)
+from application.routers import validation, home
 
 app = FastAPI()
 
@@ -22,8 +19,3 @@ conservationAreaUrl = "https://www.planning.data.gov.uk/dataset/conservation-are
 
 app.include_router(home.router)
 app.include_router(validation.router, prefix="/validation")
-
-
-
-
-

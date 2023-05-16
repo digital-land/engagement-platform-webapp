@@ -16,13 +16,14 @@ import urllib
 templates = Jinja2Templates("application/templates")
 router = APIRouter()
 
-cmsUrl = 'http://localhost:8000/api/v2/pages/{0}/?format=json'
+cmsUrl = "http://localhost:8000/api/v2/pages/{0}/?format=json"
+
 
 async def getPageContent(pageId):
     url = cmsUrl.format(pageId)
     response = await makeRequest(url)
     return json.loads(response)
-    
+
 
 def parseCsv(file):
     file.file.seek(0)
@@ -36,46 +37,51 @@ def parseCsv(file):
     for index in dataColumns:
         column = dataColumns[index]
         for row_i, row_v in enumerate(column):
-            if(row_i == 0):
+            if row_i == 0:
                 continue
-            if(len(data) < row_i):
-                data.append({
-                    'attributes': {},
-                    'mapData': {},
-                    'errors': []
-                })
-            data[row_i - 1]['attributes'][column[0]] = row_v
-    
+            if len(data) < row_i:
+                data.append({"attributes": {}, "mapData": {}, "errors": []})
+            data[row_i - 1]["attributes"][column[0]] = row_v
+
     return data
+
 
 def formatData(data):
     for index, row in enumerate(data):
-        polygon = shapely.wkt.loads(row['attributes']['Geometry'])
-        polygons = mapping(polygon)['coordinates']
-        data[index]['attributes']['Geometry'] = json.dumps(polygons)
-        point = shapely.wkt.loads(row['attributes']['Point'])
-        data[index]['attributes']['Point'] = [point.x, point.y]
-        data[index]['mapData']['bounds'] = [[polygon.bounds[1], polygon.bounds[0]],[polygon.bounds[3], polygon.bounds[2]]]
+        polygon = shapely.wkt.loads(row["attributes"]["Geometry"])
+        polygons = mapping(polygon)["coordinates"]
+        data[index]["attributes"]["Geometry"] = json.dumps(polygons)
+        point = shapely.wkt.loads(row["attributes"]["Point"])
+        data[index]["attributes"]["Point"] = [point.x, point.y]
+        data[index]["mapData"]["bounds"] = [
+            [polygon.bounds[1], polygon.bounds[0]],
+            [polygon.bounds[3], polygon.bounds[2]],
+        ]
     return data
+
 
 async def validateFile(file):
     async with httpx.AsyncClient() as client:
-        response = await client.post('http://127.0.0.1:5000/validate', files={'file': (file.filename, file.file)})
+        response = await client.post(
+            "http://127.0.0.1:5000/validate", files={"file": (file.filename, file.file)}
+        )
         return response
 
-@router.get('/')
-@router.get('/upload')
+
+@router.get("/")
+@router.get("/upload")
 async def upload(request: Request):
     content = await getPageContent(6)
 
-    template = 'validation/upload.html'
+    template = "validation/upload.html"
     context = {
-        'request': request,
-        'content': content,
+        "request": request,
+        "content": content,
     }
-    return templates.TemplateResponse(template,context)
+    return templates.TemplateResponse(template, context)
 
-@router.post('/report')
+
+@router.post("/report")
 async def uploadFile(request: Request, file: UploadFile = File(...)):
     content = await getPageContent(7)
 
@@ -88,31 +94,34 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
     errors = response.json()
 
     for error in errors:
-        data[error['rowNumber'] - 1]['errors'].append(error)
+        data[error["rowNumber"] - 1]["errors"].append(error)
 
-    if(len(errors) > 0):
-        template = 'validation/report.html'
+    if len(errors) > 0:
+        template = "validation/report.html"
         context = {
-            'request': request,
-            'data': data,
-            'content': content,
+            "request": request,
+            "data": data,
+            "content": content,
         }
-        return templates.TemplateResponse(template,context)
+        return templates.TemplateResponse(template, context)
     else:
-        return 'File Ok'
+        return "File Ok"
 
-@router.post('/report')
+
+@router.post("/report")
 async def report(request: Request):
-    with open(os.path.join('application/assets/mockdata', 'conservationAreas.json'), 'r') as file:
+    with open(
+        os.path.join("application/assets/mockdata", "conservationAreas.json"), "r"
+    ) as file:
         filecontent = file.read()
         data = json.loads(filecontent)
-    
-    for index, row in enumerate(data):
-        data[index]['Geometry'] = points(row['Geometry'])
 
-    template = 'validation/report.html'
+    for index, row in enumerate(data):
+        data[index]["Geometry"] = points(row["Geometry"])
+
+    template = "validation/report.html"
     context = {
-        'request': request,
-        'data': data,
+        "request": request,
+        "data": data,
     }
-    return templates.TemplateResponse(template,context)
+    return templates.TemplateResponse(template, context)
