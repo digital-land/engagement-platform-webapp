@@ -1,5 +1,13 @@
+# =============================
+# Utils
+# =============================
+
 server::
 	python -m uvicorn application.app:app --reload --port=8080
+
+# compile scss
+
+# build docker image
 
 # =============================
 # Dependencies
@@ -23,7 +31,7 @@ dependencies::
 
 lint: 
 	make black ./application
-	python3 -m flake8 ./application
+	python3 -m flake8 ./application --append-config config/.flake8
 
 black-check:
 	black --check .
@@ -50,5 +58,4 @@ test-integration:
 test-integration-docker:
 	docker-compose run web python -m pytest tests/integration --junitxml=.junitxml/integration.xml $(PYTEST_RUNTIME_ARGS)
 
-# Testing
 # Security

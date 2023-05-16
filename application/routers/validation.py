@@ -1,17 +1,14 @@
 from io import StringIO
 from fastapi.templating import Jinja2Templates
-from fastapi import APIRouter, Request, File, Response, UploadFile, status
-from fastapi.encoders import jsonable_encoder
+from fastapi import APIRouter, Request, File, UploadFile
 from application.core.utils import makeRequest
 from application.core.polygonHelp import points
-from fastapi.responses import RedirectResponse
 import httpx
 import os
 import json
 import pandas as pd
 import shapely.wkt
 from shapely.geometry import mapping
-import urllib
 
 templates = Jinja2Templates("application/templates")
 router = APIRouter()
