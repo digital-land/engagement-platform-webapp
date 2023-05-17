@@ -46,6 +46,10 @@ Testing is done using `pytest` with `playwrite` also being used for the acceptan
     ```
     make test-acceptance
     ```
+- To run end to end tests run:
+    ```
+    make test-e2e
+    ```
 
 ## Linting
 We use [flake8](https://flake8.pycqa.org/en/latest/) for linting, combined with [black](https://black.readthedocs.io/en/stable/) for automatic code formatting
