@@ -1,7 +1,7 @@
 from io import StringIO
 from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, File, UploadFile
-from application.core.utils import makeRequest
+from application.core.utils import makeRequest, getPageContent, getPageApiFromTitle
 from application.core.polygonHelp import points
 import httpx
 import os
@@ -9,18 +9,10 @@ import json
 import pandas as pd
 import shapely.wkt
 from shapely.geometry import mapping
+# from validators import validate
 
 templates = Jinja2Templates("application/templates")
 router = APIRouter()
-
-cmsUrl = "http://localhost:8000/api/v2/pages/{0}/?format=json"
-
-
-async def getPageContent(pageId):
-    url = cmsUrl.format(pageId)
-    response = await makeRequest(url)
-    return json.loads(response)
-
 
 def parseCsv(file):
     file.file.seek(0)
@@ -88,12 +80,12 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
 
     response = await validateFile(file)
 
-    errors = response.json()
+    responseData = response.json()
 
-    for error in errors:
+    for error in responseData['errors']:
         data[error["rowNumber"] - 1]["errors"].append(error)
 
-    if len(errors) > 0:
+    if(responseData['status'] == 'FAILED'):
         template = "validation/report.html"
         context = {
             "request": request,
@@ -105,20 +97,12 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
         return "File Ok"
 
 
-@router.post("/report")
-async def report(request: Request):
-    with open(
-        os.path.join("application/assets/mockdata", "conservationAreas.json"), "r"
-    ) as file:
-        filecontent = file.read()
-        data = json.loads(filecontent)
-
-    for index, row in enumerate(data):
-        data[index]["Geometry"] = points(row["Geometry"])
-
-    template = "validation/report.html"
+@router.get("/errors/{errorNumber}")
+async def error(request: Request, errorNumber: str):
+    data = await getPageApiFromTitle(errorNumber)
+    template = "validation/error.html"
     context = {
         "request": request,
-        "data": data,
+        "content": data,
     }
     return templates.TemplateResponse(template, context)

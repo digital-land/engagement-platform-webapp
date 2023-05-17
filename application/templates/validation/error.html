@@ -1,0 +1,10 @@
+<h1>{{content['title']}}</h1>
+<p>{{content['description'] | safe}}</p>
+
+<div>
+    {% for item in content['accordion_items'] %}
+        {{item['value'] | safe}}
+    {% endfor %}
+    
+</div>
+
