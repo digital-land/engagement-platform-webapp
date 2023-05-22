@@ -9,7 +9,8 @@ import json
 import pandas as pd
 import shapely.wkt
 from shapely.geometry import mapping
-# from validators import validate
+from main.main import validate_endpoint
+
 
 templates = Jinja2Templates("application/templates")
 router = APIRouter()
@@ -50,11 +51,12 @@ def formatData(data):
 
 
 async def validateFile(file):
-    async with httpx.AsyncClient() as client:
-        response = await client.post(
-            "http://127.0.0.1:5000/validate", files={"file": (file.filename, file.file)}
-        )
-        return response
+    # async with httpx.AsyncClient() as client:
+    #     response = await client.post(
+    #         "http://127.0.0.1:5000/validate", files={"file": (file.filename, file.file)}
+    #     )
+    response = await validate_endpoint(file)
+    return response
 
 
 @router.get("/")
@@ -80,15 +82,16 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
 
     response = await validateFile(file)
 
-    responseData = response.json()
-
+    response_text = response[0]
+    responseData = json.loads(response_text)
+   
     for error in responseData['errors']:
         data[error["rowNumber"] - 1]["errors"].append(error)
 
     if(responseData['status'] == 'FAILED'):
         template = "validation/report.html"
         context = {
-            "request": request,
+            "request": request, 
             "data": data,
             "content": content,
         }
