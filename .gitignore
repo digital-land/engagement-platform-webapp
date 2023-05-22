@@ -25,3 +25,13 @@ archive.zip
 # vim temporary files
 *~
 .*.sw?
+
+# pyenv version files
+.python-version
+
+# python venv
+.venv
+
+# tesing result files
+integration-tests.md
+unit-tests.md

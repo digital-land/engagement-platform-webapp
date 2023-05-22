@@ -8,6 +8,8 @@ black==23.3.0
     # via -r requirements/dev-requirements.in
 certifi==2023.5.7
     # via requests
+cfgv==3.3.1
+    # via pre-commit
 chardet==5.1.0
     # via mbstrdecoder
 charset-normalizer==3.1.0
@@ -20,14 +22,20 @@ dataproperty==0.55.1
     # via
     #   pytablewriter
     #   tabledata
+distlib==0.3.6
+    # via virtualenv
 exceptiongroup==1.1.1
     # via pytest
+filelock==3.12.0
+    # via virtualenv
 flake8==6.0.0
     # via -r requirements/dev-requirements.in
 greenlet==2.0.1
     # via playwright
 h11==0.14.0
     # via uvicorn
+identify==2.5.24
+    # via pre-commit
 idna==3.4
     # via requests
 iniconfig==2.0.0
@@ -41,6 +49,8 @@ mccabe==0.7.0
     # via flake8
 mypy-extensions==1.0.0
     # via black
+nodeenv==1.8.0
+    # via pre-commit
 packaging==23.1
     # via
     #   black
@@ -51,13 +61,17 @@ pathspec==0.11.1
 pathvalidate==2.5.2
     # via pytablewriter
 platformdirs==3.5.1
-    # via black
+    # via
+    #   black
+    #   virtualenv
 playwright==1.33.0
     # via
     #   -r requirements/dev-requirements.in
     #   pytest-playwright
 pluggy==1.0.0
     # via pytest
+pre-commit==3.3.1
+    # via -r requirements/dev-requirements.in
 pycodestyle==2.10.0
     # via flake8
 pyee==9.0.4
@@ -84,6 +98,8 @@ python-slugify==8.0.1
     # via pytest-playwright
 pytz==2023.3
     # via typepy
+pyyaml==6.0
+    # via pre-commit
 requests==2.30.0
     # via pytest-base-url
 six==1.16.0
@@ -112,6 +128,8 @@ urllib3==2.0.2
     # via requests
 uvicorn==0.22.0
     # via -r requirements/dev-requirements.in
+virtualenv==20.23.0
+    # via pre-commit
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
