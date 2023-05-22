@@ -4,3 +4,4 @@ pandas
 shapely
 jinja2
 python-multipart
+-e git+https://github.com/digital-land/validators.git@main#egg=epValidators
