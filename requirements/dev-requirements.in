@@ -5,4 +5,3 @@ pytest
 playwright
 pytest-playwright
 pytest-md-report
--e git+https://github.com/digital-land/validators.git@main#egg=epValidators
