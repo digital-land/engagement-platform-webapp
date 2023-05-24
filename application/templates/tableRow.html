@@ -7,7 +7,7 @@
             <h2>{{dataPoint['attributes']['Reference']}} - {{dataPoint['attributes']['Name']}}</h2>
         </div>
         <div class="map">
-            {{ dlLeafletMap(dataPoint['attributes']['Reference'], dataPoint['attributes']['Geometry'], dataPoint['attributes']['Point'], dataPoint['mapData']['bounds']) }}
+            {{ dlLeafletMap(dataPoint['attributes']['Reference'], dataPoint['attributes']['Geometry'], dataPoint['attributes']['Point'], dataPoint['mapData']['bounds'], dataPoint['mapData']['outsideUk']) }}
         </div>
         <div class="attributes">
             {% for key in dataPoint['attributes'] %}
