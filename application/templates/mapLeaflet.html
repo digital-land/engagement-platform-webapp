@@ -1,0 +1,9 @@
+{% macro dlLeafletMap(id, Geometry, Point, bounds, outsideUk) %}
+<div>
+    <div id="map-{{id}}" style="height: 400px;"></div>
+    <script>
+        initMap("map-{{id}}", '{{Geometry}}', '{{Point[1]}}', '{{Point[0]}}', '{{bounds}}', '{{outsideUk}}')
+    </script>
+</div>
+
+{% endmacro %}

@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+gunicorn
+httpx
+pandas
+shapely
+jinja2
+python-multipart
+-e git+https://github.com/digital-land/validators.git@T0-phase-test#egg=epValidators

@@ -1,0 +1,83 @@
+{% from "tableRow.html" import tableRow %}
+{% from "mapLeaflet.html" import dlLeafletMap %}
+
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/stylesheets/application.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+        crossorigin=""></script>
+        <script>
+
+            const calculateCentreAndBounds = (point1, point2) => {
+                let x = (parseInt(point1[0]) + parseInt(point2[0])) / 2
+                let y = (parseInt(point1[1]) + parseInt(point2[1])) / 2
+
+                let bounds = `[[${point1}], [${point2}]]`
+
+                return [`[${x},${y}]`, bounds]
+            }
+
+            const initMap = (id, Geometry, centre_x, centre_y, bounds, outsideUk = 'false') => {
+                console.log(`init ${id}`);
+
+                viewCentre = [centre_x, centre_y]
+
+                if(outsideUk){
+                    result = calculateCentreAndBounds([centre_x, centre_y],["53", "-2"])
+                    viewCentre = result[0]
+                    bounds = result[1]
+                }
+
+                var map = L.map(`${id}`, {
+                    attributionControl: false, 
+                    zoomControl: false,    
+                    dragging: false,
+                    scrollWheelZoom: 'center'
+                }).setView([centre_x, centre_y], 12);
+
+                map.dragging.disable();
+                map.touchZoom.disable();
+                map.doubleClickZoom.disable();
+                map.scrollWheelZoom.disable();
+                map.boxZoom.disable();
+                map.keyboard.disable();
+
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+                map.fitBounds(JSON.parse(bounds))
+                var polygon = L.geoJSON(
+                    {
+                        "type": "Polygon",
+                        "coordinates": JSON.parse(Geometry)
+                    }).addTo(map);
+                if(outsideUk){
+                    const points = [
+                        [centre_x,centre_y],
+                        [53, -2]
+                    ]
+                    var line = L.polyline(points, {color: 'red'}).addTo(map);
+                }
+                console.log('done');
+            }
+        </script>
+    </head>
+    <body>
+        <h1>{{content['title']}}</h1>
+        {{content['description'] | safe}}
+        <div>
+            <div>
+                <div class="table">
+                    {% for row in data %}
+                        {{ tableRow(row) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
