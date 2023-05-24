@@ -1,8 +1,13 @@
 import json
 import httpx
 import os
+from dotenv import load_dotenv
 
-cmsDomain = os.getenv("CMS_URL", "http://localhost:8000/")
+load_dotenv()
+
+cmsDomain = os.getenv("CMS_URL", "http://localhost:8002/")
+
+print(cmsDomain)
 
 pagesUrl = cmsDomain + "api/v2/pages/?format=json"
 
