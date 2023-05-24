@@ -31,7 +31,7 @@ dependencies::
 
 lint: 
 	make black ./application
-	python3 -m flake8 ./application --append-config config/.flake8
+	python3 -m flake8 ./application
 
 black-check:
 	black --check .
