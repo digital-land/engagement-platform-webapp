@@ -15,8 +15,8 @@ server::
 
 init::
 	python -m pip install pip-tools
-	make dependencies
 	make piptool-compile
+	make dependencies
 
 piptool-compile::
 	python -m piptools compile --output-file=requirements/requirements.txt requirements/requirements.in
