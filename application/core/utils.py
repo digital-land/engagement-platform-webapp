@@ -1,7 +1,10 @@
 import json
 import httpx
+import os
 
-pagesUrl = "http://localhost:8000/api/v2/pages/?format=json"
+cmsDomain = os.getenv("CMS_URL", "http://localhost:8000/")
+
+pagesUrl = cmsDomain + "api/v2/pages/?format=json"
 
 
 async def makeRequest(url):
@@ -10,7 +13,7 @@ async def makeRequest(url):
         return response.text
 
 
-cmsUrl = "http://localhost:8000/api/v2/pages/{0}/?format=json"
+cmsUrl = cmsDomain + "/api/v2/pages/{0}/?format=json"
 
 
 async def getPageContent(pageId):
