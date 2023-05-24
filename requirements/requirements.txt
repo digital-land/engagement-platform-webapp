@@ -12,6 +12,8 @@ anyio==3.6.2
     #   starlette
 blinker==1.6.2
     # via flask
+cchardet==2.1.7
+    # via epvalidators
 certifi==2023.5.7
     # via
     #   httpcore
