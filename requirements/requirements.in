@@ -6,4 +6,5 @@ pandas
 shapely
 jinja2
 python-multipart
--e git+https://github.com/digital-land/validators.git@T0-phase-test#egg=epValidators
+python-dotenv
+-e git+https://github.com/digital-land/validators.git@Heroku#egg=epValidators

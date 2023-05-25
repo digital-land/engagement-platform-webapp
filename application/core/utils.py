@@ -1,8 +1,17 @@
 import json
 import httpx
+import os
+from dotenv import load_dotenv
 
-pagesUrl = "http://localhost:8000/api/v2/pages/?format=json"
+load_dotenv()
 
+cmsDomain = os.getenv("CMS_URL", "http://localhost:8002/")
+
+print(cmsDomain)
+
+pagesUrl = cmsDomain + "api/v2/pages/?format=json"
+
+cmsUrl = cmsDomain + "api/v2/pages/{0}/?format=json"
 
 async def makeRequest(url):
     async with httpx.AsyncClient() as client:
@@ -10,11 +19,11 @@ async def makeRequest(url):
         return response.text
 
 
-cmsUrl = "http://localhost:8000/api/v2/pages/{0}/?format=json"
 
 
 async def getPageContent(pageId):
     url = cmsUrl.format(pageId)
+    print('making request to: ' + url)
     response = await makeRequest(url)
     return json.loads(response)
 

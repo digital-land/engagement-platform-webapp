@@ -58,7 +58,7 @@ async def validateFile(file):
 @router.get("/")
 @router.get("/upload")
 async def upload(request: Request):
-    content = await getPageContent(6)
+    content = await getPageApiFromTitle('upload')
 
     template = "validation/upload.html"
     context = {
@@ -76,7 +76,7 @@ async def upload(request: Request):
 # return the template
 @router.post("/report")
 async def uploadFile(request: Request, file: UploadFile = File(...)):
-    content = await getPageContent(7)
+    content = await getPageApiFromTitle('report')
 
     data = parseCsv(file)
 
