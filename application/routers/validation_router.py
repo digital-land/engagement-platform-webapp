@@ -58,7 +58,10 @@ async def validateFile(file):
 @router.get("/")
 @router.get("/upload")
 async def upload(request: Request):
-    content = await getPageApiFromTitle('upload')
+    try:
+        content = await getPageApiFromTitle('upload')
+    except Exception as e:
+        return str(e)
 
     template = "validation/upload.html"
     context = {
@@ -76,7 +79,10 @@ async def upload(request: Request):
 # return the template
 @router.post("/report")
 async def uploadFile(request: Request, file: UploadFile = File(...)):
-    content = await getPageApiFromTitle('report')
+    try:
+        content = await getPageApiFromTitle('report')
+    except Exception as e:
+        return str(e)
 
     data = parseCsv(file)
 
@@ -112,11 +118,15 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
 
 @router.get("/errors/{errorNumber}")
 async def error(request: Request, errorNumber: str):
-    data = await getPageApiFromTitle(errorNumber)
+    try:
+        content = await getPageApiFromTitle(errorNumber)
+    except Exception as e:
+        return str(e)
+
     template = "validation/error.html"
     context = {
         "request": request,
-        "content": data,
+        "content": content,
     }
     return templates.TemplateResponse(template, context)
 
