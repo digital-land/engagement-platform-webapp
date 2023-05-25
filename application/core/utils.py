@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-cmsDomain = os.getenv("CMS_URL", "http://localhost:8002/")
+cmsDomain = os.getenv("CMS_URL", "http://localhost:8000/")
 
 print(cmsDomain)
 
@@ -15,7 +15,10 @@ cmsUrl = cmsDomain + "api/v2/pages/{0}/?format=json"
 
 async def makeRequest(url):
     async with httpx.AsyncClient() as client:
-        response = await client.get(url)
+        try:
+            response = await client.get(url)
+        except Exception as e:
+            raise('Couldn\'t make request to: ' + url + ' Reason: ' + e)
         return response.text
 
 
@@ -24,16 +27,26 @@ async def makeRequest(url):
 async def getPageContent(pageId):
     url = cmsUrl.format(pageId)
     print('making request to: ' + url)
-    response = await makeRequest(url)
+    try:
+        response = await makeRequest(url)
+    except Exception as e:
+        raise('Couldn\'t get page content for page id' + pageId + ' Reason: ' + e)
     return json.loads(response)
 
 
 async def getPageApiFromTitle(title):
+    pageId = None
     async with httpx.AsyncClient() as client:
-        pagesResponse = await client.get(pagesUrl)
+        try:
+            pagesResponse = await client.get(pagesUrl)
+        except Exception as e:
+            raise Exception("Can't connect to cms, " + e)
         pages = pagesResponse.json()
         for page in pages["items"]:
             if page["title"] == title:
                 pageId = page["id"]
                 break
-    return await getPageContent(pageId)
+    if(pageId == None):
+        raise Exception('No page found with title: ' + title)
+    else:
+        return await getPageContent(pageId)
