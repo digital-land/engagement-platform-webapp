@@ -11,6 +11,7 @@ print(cmsDomain)
 
 pagesUrl = cmsDomain + "api/v2/pages/?format=json"
 
+cmsUrl = cmsDomain + "/api/v2/pages/{0}/?format=json"
 
 async def makeRequest(url):
     async with httpx.AsyncClient() as client:
@@ -18,11 +19,11 @@ async def makeRequest(url):
         return response.text
 
 
-cmsUrl = cmsDomain + "/api/v2/pages/{0}/?format=json"
 
 
 async def getPageContent(pageId):
     url = cmsUrl.format(pageId)
+    print('making request to: ' + url)
     response = await makeRequest(url)
     return json.loads(response)
 
