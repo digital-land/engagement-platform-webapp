@@ -47,6 +47,6 @@ async def getPageApiFromTitle(title):
                 pageId = page["id"]
                 break
     if(pageId == None):
-        raise Exception('No page found with title: ' + title)
+        raise Exception('No page found in cms with title: ' + title)
     else:
         return await getPageContent(pageId)
