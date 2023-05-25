@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from application.routers import validation_router, home
+from application.routers import validation_router, home, health
 
 app = FastAPI()
 
@@ -14,5 +14,6 @@ app.mount(
 cmsUrl = "http://localhost:8000/api/v2/pages/4/?format=json"
 conservationAreaUrl = "https://www.planning.data.gov.uk/dataset/conservation-area.json"
 
+app.include_router(health.router)
 app.include_router(home.router)
 app.include_router(validation_router.router, prefix="/validation")
