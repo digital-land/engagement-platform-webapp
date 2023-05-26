@@ -6,4 +6,4 @@ playwright
 pytest-playwright
 pytest-md-report
 pre-commit
--e git+https://github.com/digital-land/validators.git@T0-phase-test#egg=epValidators
+-e git+https://github.com/digital-land/validators.git@main#egg=epValidators
