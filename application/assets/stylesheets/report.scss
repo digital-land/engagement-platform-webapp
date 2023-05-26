@@ -1,0 +1,42 @@
+.table {
+
+    border: solid black 2px;
+
+    .table-column {
+
+    }
+
+    .table-row {
+       padding: 1em;
+       border-bottom: solid black 1px;
+    }
+
+    .header-row {
+
+    }
+
+    .map {
+        margin-bottom: 1em;
+    }
+
+    .attribute {
+        display: block;
+        width: 500px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .errors {
+        color: red;
+        display: block;
+        width: 500px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        .error {
+            margin: 0em 0em 1em 1em;
+        }
+    }
+}

@@ -1,9 +1,11 @@
 {% from "tableRow.html" import tableRow %}
 {% from "mapLeaflet.html" import dlLeafletMap %}
+{% import "macros/banners.html" as banners %}
 
 <html>
     <head>
         <link rel="stylesheet" href="/static/stylesheets/application.css">
+        <link rel="stylesheet" href="/static/stylesheets/report.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
         crossorigin=""/>
@@ -68,14 +70,17 @@
         </script>
     </head>
     <body>
-        <h1>{{content['title']}}</h1>
-        {{content['description'] | safe}}
-        <div>
+        {{banners.header()}}
+        <div class="main">
+            <h1>{{content['title']}}</h1>
+            {{content['description'] | safe}}
             <div>
-                <div class="table">
-                    {% for row in data %}
-                        {{ tableRow(row) }}
-                    {% endfor %}
+                <div>
+                    <div class="table">
+                        {% for row in data %}
+                            {{ tableRow(row) }}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>

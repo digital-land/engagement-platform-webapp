@@ -5,32 +5,3 @@
   .notification h3, .notification h4 {
     margin: 0px;
     font-weight: 400; }
-
-.welcome {
-  position: relative;
-  height: 300px;
-  width: 100%; }
-  .welcome .imageContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 100%;
-    width: 100%; }
-    .welcome .imageContainer .image {
-      object-fit: cover;
-      height: 100%;
-      width: 100%; }
-  .welcome .message {
-    position: absolute;
-    bottom: 10%;
-    left: 10%;
-    background-color: white; }
-    .welcome .message p {
-      margin: 5px 5px;
-      font-size: 20px;
-      font-weight: bolder; }
-
-.main {
-  margin: 1em 2em; }

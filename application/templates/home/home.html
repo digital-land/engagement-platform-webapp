@@ -1,4 +1,4 @@
-{% import "macros/header.html" as header %}
+{% import "macros/banners.html" as banners %}
 
 <html>
     <head>
@@ -6,25 +6,9 @@
         <link rel="stylesheet" href="/static/stylesheets/home.css">
     </head>
     <body>
-        {{header.header()}}
-        <div class="notification">
-            <div class="image">
-            </div>
-            <div class="info">
-                <h3>There is a new data standard for Conservation Area</h3>
-                <h4>You will have received an email alert for this.</h4>
-            </div>
-            <a href="#">Read more</a>
-        </div>
-        <div class="welcome">
-            <div class="imageContainer">
-                <img src="/static/images/welcomeImage.png" class="image"/>
-            </div>
-            <div class="message">
-                <p>Good morning Jeremy</p>
-                <p>Plymouth City Council planning data</p>
-            </div>
-        </div>
+        {{banners.header()}}
+        {{banners.notification()}}
+        {{banners.welcome()}}
         <div class="main">
             <div class="section">
                 <div>

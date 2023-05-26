@@ -1,7 +1,19 @@
-<h1>{{content['title'] | safe}}</h1>
-{{content['description'] | safe}}
+{% import "macros/banners.html" as banners %}
 
-<form action="report" method="POST" enctype="multipart/form-data">
-    <input type="file" id="file" name="file">
-    <input type="submit">
-</form>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/stylesheets/application.css">
+    </head>
+    <body>
+        {{banners.header()}}
+        {{banners.welcome()}}
+        <div class="main">
+            <h1>{{content['title'] | safe}}</h1>
+            {{content['description'] | safe}}
+            <form action="report" method="POST" enctype="multipart/form-data">
+                <input type="file" id="file" name="file">
+                <input type="submit">
+            </form>
+        </div>
+    </body>
+</html>
