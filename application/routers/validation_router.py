@@ -8,6 +8,9 @@ import shapely.wkt
 from shapely.geometry import mapping
 from main.main import validate_endpoint
 import os
+from application.logging.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 templates = Jinja2Templates("application/templates")
@@ -15,43 +18,52 @@ router = APIRouter()
 
 
 def parseCsv(file):
-    file.file.seek(0)
-    contents = file.file.read().decode("utf-8")
-
-    csvStringIO = StringIO(contents)
-    dataColumns = pd.read_csv(csvStringIO, sep=",", header=None)
-
     data = []
+    try:
+        file.file.seek(0)
+        contents = file.file.read().decode("utf-8")
 
-    for index in dataColumns:
-        column = dataColumns[index]
-        for row_i, row_v in enumerate(column):
-            if row_i == 0:
-                continue
-            if len(data) < row_i:
-                data.append({"attributes": {}, "mapData": {}, "errors": []})
-            data[row_i - 1]["attributes"][column[0]] = row_v
+        csvStringIO = StringIO(contents)
+        dataColumns = pd.read_csv(csvStringIO, sep=",", header=None)
+
+        for index in dataColumns:
+            column = dataColumns[index]
+            for row_i, row_v in enumerate(column):
+                if row_i == 0:
+                    continue
+                if len(data) < row_i:
+                    data.append({"attributes": {}, "mapData": {}, "errors": []})
+                data[row_i - 1]["attributes"][column[0]] = row_v
+    except Exception as e:
+        logger.error("Unable to parse csv file %s", str(e))
 
     return data
 
 
 def formatData(data):
-    for index, row in enumerate(data):
-        polygon = shapely.wkt.loads(row["attributes"]["Geometry"])
-        polygons = mapping(polygon)["coordinates"]
-        data[index]["attributes"]["Geometry"] = json.dumps(polygons)
-        point = shapely.wkt.loads(row["attributes"]["Point"])
-        data[index]["attributes"]["Point"] = [point.x, point.y]
-        data[index]["mapData"]["bounds"] = [
-            [polygon.bounds[1], polygon.bounds[0]],
-            [polygon.bounds[3], polygon.bounds[2]],
-        ]
+    try:
+        for index, row in enumerate(data):
+            polygon = shapely.wkt.loads(row["attributes"]["Geometry"])
+            polygons = mapping(polygon)["coordinates"]
+            data[index]["attributes"]["Geometry"] = json.dumps(polygons)
+            point = shapely.wkt.loads(row["attributes"]["Point"])
+            data[index]["attributes"]["Point"] = [point.x, point.y]
+            data[index]["mapData"]["bounds"] = [
+                [polygon.bounds[1], polygon.bounds[0]],
+                [polygon.bounds[3], polygon.bounds[2]],
+            ]
+    except Exception as e:
+        logger.error("Unable to format data: %s", str(e))
 
     return data
 
 
 async def validateFile(file):
-    response = await validate_endpoint(file)
+    logger.info("Sending data to validations package..")
+    try:
+        response = await validate_endpoint(file)
+    except Exception as e:
+        logger.error("Unable to validate data from Validation package: %s", str(e))
     return response
 
 
@@ -76,6 +88,7 @@ async def upload(request: Request):
 # return the template
 @router.post("/report")
 async def uploadFile(request: Request, file: UploadFile = File(...)):
+    logger.info("Enter uploadFile method.")
     content = await getPageContent(7)
 
     data = parseCsv(file)
@@ -84,9 +97,12 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
 
     response = await validateFile(file)
 
-    response_text = response[0]
-    responseData = json.loads(response_text)
-
+    try:
+        response_text = response[0]
+        responseData = json.loads(response_text)
+    except Exception as e:
+        logger.error("Error in loading response data")
+    
     if (
         len(responseData["errors"]) == 1
         and responseData["errors"][0]["scope"] == "File"
