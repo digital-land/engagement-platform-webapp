@@ -35,3 +35,6 @@ archive.zip
 # tesing result files
 integration-tests.md
 unit-tests.md
+
+# build files
+build/*

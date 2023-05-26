@@ -2,8 +2,14 @@ README.md
 setup.py
 application/__init__.py
 application/app.py
+application/core/__init__.py
+application/core/compileSass.py
+application/core/polygonHelp.py
+application/core/utils.py
+application/core/parsers/__init__.py
+application/core/parsers/parseCsv.py
+application/models/Entity.py
 application/models/__init__.py
-application/models/entity.py
 application/testbench/__init__.py
 application/testbench/testbench.py
 webapp.egg-info/PKG-INFO
