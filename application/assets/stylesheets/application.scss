@@ -1,48 +1,57 @@
 body {
-    padding: 0em 5em;
+    margin: 0px;
 }
 
-.table {
+.topBanner{
 
-    border: solid black 2px;
+}
 
-    .table-column {
-        
+.header{
+    background-color: black;
+    color: white;
+    padding: 0.1em 0.5em;
+
+    h2 {
+        margin: 0px;
     }
+}
 
-    .table-row {
-       padding: 1em;
-       border-bottom: solid black 1px;
-    }
+.welcome{
+    position: relative;
+    height: 300px;
+    width: 100%;
 
-    .header-row {
-        
-    }
-
-    .map {
-        margin-bottom: 1em;
-    }
-
-    .attribute {
-        display: block;
-        width: 500px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-
-    .errors {
-        color: red;
-        display: block;
-        width: 500px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-
-        .error {
-            margin: 0em 0em 1em 1em;
+    .imageContainer{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        width: 100%;
+        .image{
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
         }
     }
+
+    .message{
+        position: absolute;
+        bottom: 10%;
+        left: 10%;
+        background-color: white;
+        p {
+            margin: 5px 5px;
+            font-size: 20px;
+            font-weight: bolder;
+        }
+    }
+
+}
+
+.main{
+    margin: 1em 2em;
 }
 
 

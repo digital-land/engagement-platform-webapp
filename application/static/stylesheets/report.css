@@ -1,0 +1,22 @@
+.table {
+  border: solid black 2px; }
+  .table .table-row {
+    padding: 1em;
+    border-bottom: solid black 1px; }
+    .table .map {
+      margin-bottom: 1em; }
+      .table .attribute {
+        display: block;
+        width: 500px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap; }
+        .table .errors {
+          color: red;
+          display: block;
+          width: 500px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap; }
+          .table .errors .error {
+            margin: 0em 0em 1em 1em; }
