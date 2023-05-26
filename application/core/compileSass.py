@@ -1,3 +1,4 @@
+import sys
 import os
 from scss import Scss
 
@@ -27,4 +28,4 @@ def convertScssInFolder(folder):
                     scss_code = file.write(css_code)
 
 
-convertScssInFolder("../assets")
+convertScssInFolder(sys.argv[1])
