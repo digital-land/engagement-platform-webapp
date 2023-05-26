@@ -3,23 +3,16 @@
 
 import pandas
 from io import StringIO
-from application.models.Entity import Entity
+from application.models.Entity import Entity, EntityFactory
 
 def parseCsv(contents):
     csvStringIO = StringIO(contents)
-    dataColumns = pandas.read_csv(csvStringIO, sep=",", header=None)
-
+    dataColumns = pandas.read_csv(csvStringIO, sep=",", header=0)
+    dataArray = dataColumns.to_dict('records')
     data = []
 
-    for rowNumber, row in enumerate(dataColumns.values):
-        row = row.tolist()
-        if rowNumber == 0:
-            continue
-        point = row.pop(6)
-        geometry = row.pop(2)
-        name = row.pop(1)
-        reference = row.pop(0)
-        attributes = row
-        data.append(Entity(reference, name, geometry, point, row))
+    for row in dataArray:
+        row =  {k.lower(): v for k, v in row.items()}
+        data.append(EntityFactory.makeFromCsvRow(row))
 
     return data
