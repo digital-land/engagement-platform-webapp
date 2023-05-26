@@ -6,6 +6,16 @@ server::
 	python -m uvicorn application.app:app --reload --port=8080
 
 # compile scss
+scss::
+	python application/core/compileSass.py './application/assets'
+
+images::
+	rm -R ./application/static/images
+	cp -R ./application/assets/images ./application/static/images
+
+build::
+	make scss
+	make images
 
 # build docker image
 
@@ -20,7 +30,7 @@ init::
 
 piptool-compile::
 	python -m piptools compile --output-file=requirements/requirements.txt requirements/requirements.in
-	python -m piptools compile requirements/dev-requirements.in
+	python -m piptools compile --output-file=requirements/dev-requirements.txt requirements/dev-requirements.in
 
 dependencies::
 	pip-sync requirements/requirements.txt  requirements/dev-requirements.txt

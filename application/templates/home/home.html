@@ -1,1 +1,27 @@
-<h1>Home</h1>
+{% import "macros/banners.html" as banners %}
+
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/stylesheets/application.css">
+        <link rel="stylesheet" href="/static/stylesheets/home.css">
+    </head>
+    <body>
+        {{banners.header()}}
+        {{banners.notification()}}
+        {{banners.welcome()}}
+        <div class="main">
+            <div class="section">
+                <div>
+                    <h4>Check your data</h4>
+                    <p>Find out if your data meets the standards set by DLUHC and get recommendations on how to improve your data.</p>
+                    <a href="/validation/upload">
+                        Start now
+                    </a>
+                </div>
+                <div>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

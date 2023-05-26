@@ -1,25 +1,38 @@
 body {
-  padding: 0em 5em; }
+  margin: 0px; }
 
-  .table {
-    border: solid black 2px; }
-    .table .table-row {
-      padding: 1em;
-      border-bottom: solid black 1px; }
-      .table .map {
-        margin-bottom: 1em; }
-        .table .attribute {
-          display: block;
-          width: 500px;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap; }
-          .table .errors {
-            color: red;
-            display: block;
-            width: 500px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap; }
-            .table .errors .error {
-              margin: 0em 0em 1em 1em; }
+  .header {
+    background-color: black;
+    color: white;
+    padding: 0.1em 0.5em; }
+    .header h2 {
+      margin: 0px; }
+
+.welcome {
+  position: relative;
+  height: 300px;
+  width: 100%; }
+  .welcome .imageContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%; }
+    .welcome .imageContainer .image {
+      object-fit: cover;
+      height: 100%;
+      width: 100%; }
+  .welcome .message {
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    background-color: white; }
+    .welcome .message p {
+      margin: 5px 5px;
+      font-size: 20px;
+      font-weight: bolder; }
+
+.main {
+  margin: 1em 2em; }

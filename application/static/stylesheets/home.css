@@ -1,0 +1,7 @@
+.notification {
+  background-color: #0F766E;
+  color: white;
+  padding: 0.1em 1em; }
+  .notification h3, .notification h4 {
+    margin: 0px;
+    font-weight: 400; }

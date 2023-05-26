@@ -6,3 +6,4 @@ playwright
 pytest-playwright
 pytest-md-report
 pre-commit
+pyscss
