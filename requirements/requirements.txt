@@ -4,7 +4,8 @@
 #
 #    pip-compile --output-file=requirements/requirements.txt requirements/requirements.in
 #
--e git+https://github.com/digital-land/validators.git@Heroku#egg=epValidators
+
+-e git+https://github.com/digital-land/validators.git@main#egg=epValidators
     # via -r requirements/requirements.in
 anyio==3.6.2
     # via

@@ -7,4 +7,6 @@ shapely
 jinja2
 python-multipart
 python-dotenv
--e git+https://github.com/digital-land/validators.git@Heroku#egg=epValidators
+-e git+https://github.com/digital-land/validators.git@main#egg=epValidators
+
+

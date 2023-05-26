@@ -3,9 +3,15 @@
 # by the following command:
 #
 #    pip-compile --output-file=requirements/dev-requirements.txt requirements/dev-requirements.in
-#
+
+-e git+https://github.com/digital-land/validators.git@main#egg=epValidators
+    # via -r requirements/dev-requirements.in
 black==23.3.0
     # via -r requirements/dev-requirements.in
+blinker==1.6.2
+    # via flask
+cchardet==2.1.7
+    # via epvalidators
 certifi==2023.5.7
     # via requests
 cfgv==3.3.1
