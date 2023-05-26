@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements/requirements.txt requirements/requirements.in
 #
--e git+https://github.com/digital-land/validators.git@T0-phase-test#egg=epValidators
+-e git+https://github.com/digital-land/validators.git@main#egg=epValidators
     # via -r requirements/requirements.in
 anyio==3.6.2
     # via
@@ -12,6 +12,8 @@ anyio==3.6.2
     #   starlette
 blinker==1.6.2
     # via flask
+cchardet==2.1.7
+    # via epvalidators
 certifi==2023.5.7
     # via
     #   httpcore
