@@ -38,3 +38,5 @@ unit-tests.md
 
 # build
 build/*
+
+node_modules/*
