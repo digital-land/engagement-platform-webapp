@@ -12,4 +12,7 @@ module.exports = {
   },
   rules: {
   },
+  plugins: [
+    'html',
+  ],
 };
