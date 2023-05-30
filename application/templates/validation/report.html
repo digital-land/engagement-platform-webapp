@@ -2,8 +2,6 @@
 {% from "mapLeaflet.html" import dlLeafletMap %}
 {% import "macros/banners.html" as banners %}
 
-
-
 <html>
     <head>
 				<title>{{content['title']}}</title>
@@ -42,8 +40,6 @@
         {% for row in data %}
 <script>
 /* global entities, geometry */
-const attributes = '{{row["attributes"]|tojson}}'
-const errors = '{{row["errors"]|tojson}}'
 entities.push({
 	geometry: geometry(
 		"{{row['attributes']['Geometry']}}",
@@ -51,8 +47,8 @@ entities.push({
 		"{{row['mapData']['bounds']}}",
 		"{{row['mapData']['outsideUk']}}",
 	),
-	attributes: JSON.parse(attributes),
-	errors: JSON.parse(errors),
+	attributes: JSON.parse('{{row["attributes"]|tojson}}'),
+	errors: JSON.parse('{{row["errors"]|tojson}}'),
 })
 </script>
         {% endfor %}

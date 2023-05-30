@@ -2,11 +2,11 @@
 
 const entities = []
 
-const calculateCentreAndBounds = (point1, point2) => {
-	const x = (parseInt(point1[0], 10) + parseInt(point2[0], 10)) / 2
-	const y = (parseInt(point1[1], 10) + parseInt(point2[1], 10)) / 2
+const calculateCentreAndBounds = (p1, p2) => {
+	const x = (parseInt(p1[0], 10) + parseInt(p2[0], 10)) / 2
+	const y = (parseInt(p1[1], 10) + parseInt(p2[1], 10)) / 2
 
-	const bounds = `[[${point1}], [${point2}]]`
+	const bounds = `[[${p1}], [${p2}]]`
 
 	return [`[${x},${y}]`, bounds]
 }
@@ -92,10 +92,10 @@ const changeView = (deltaIndex) => {
 			],
 		)
 		console.log(`fitting bounds to mid point of line ${newIndex}`)
-		map.fitBounds(JSON.parse(bounds), { animate: true, duration: 2 })
+		map.fitBounds(JSON.parse(bounds), { animate: true, duration: 0.5 })
 	} else {
 		console.log(`fitting bounds to ${newIndex}`)
-		map.fitBounds(JSON.parse(entities[newIndex].geometry.bounds), { animate: true, duration: 2 })
+		map.fitBounds(JSON.parse(entities[newIndex].geometry.bounds), { animate: true, duration: 0.5 })
 	}
 	currentIndex = newIndex
 	resetAllHighlights()
