@@ -12,6 +12,9 @@
         <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
         crossorigin=""></script>
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+        crossorigin=""></script>
         <script>
 
             const calculateCentreAndBounds = (point1, point2) => {
@@ -23,49 +26,105 @@
                 return [`[${x},${y}]`, bounds]
             }
 
-            const initMap = (id, Geometry, centre_x, centre_y, bounds, outsideUk = 'false') => {
-                console.log(`init ${id}`);
+            let map;
 
-                viewCentre = [centre_x, centre_y]
-
-                if(outsideUk){
-                    result = calculateCentreAndBounds([centre_x, centre_y],["53", "-2"])
-                    viewCentre = result[0]
-                    bounds = result[1]
-                }
-
-                var map = L.map(`${id}`, {
-                    attributionControl: false, 
-                    zoomControl: false,    
-                    dragging: false,
+            const initMap = () => {
+                map = L.map('map-1', {
+                    attributionControl: false,
+                    zoomControl: false,
+                    dragging: true,
                     scrollWheelZoom: 'center'
-                }).setView([centre_x, centre_y], 12);
-
-                map.dragging.disable();
-                map.touchZoom.disable();
-                map.doubleClickZoom.disable();
-                map.scrollWheelZoom.disable();
-                map.boxZoom.disable();
-                map.keyboard.disable();
+                })
 
                 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map);
-                map.fitBounds(JSON.parse(bounds))
+
+                for(entity of entities){
+                    var polygon = L.geoJSON(
+                        {
+                            "type": "Polygon",
+                            "coordinates": JSON.parse(entity.geometry.area)
+                        }).addTo(map);
+                    entity.geometry.polygon = polygon
+                }
+
+                changeView(currentIndex)
+            }
+
+            let currentIndex = 0;
+
+            const changeView = (index) => {
+                console.log(':: ' + index)
+                if(index >= entities.length){
+                    index = 0
+                }
+                if(index < 0){
+                    index = entities.length - 1
+                }
+                console.log('fitting bounds to ' + index)
+                map.fitBounds(JSON.parse(entities[index].geometry.bounds), {animate: true, duration: 0.5})
+                currentIndex = index;
+                resetAllHighlights()
+                highlightGeometry(index)
+                changeDetails(index)
+            }
+
+            const changeDetails = (index) => {
+                document.getElementById('entityName').innerHTML = `${entities[index].attributes['Reference']} - ${entities[index].attributes['Name']}`
+                attributes = '';
+                for(const[key,value] of Object.entries(entities[index].attributes)){
+                    attributes += `<div class='attribute ${key.replace(' ', '_')}'>${key}: ${value}</div>`
+                }
+
+                document.getElementById('entityAttributes').innerHTML = attributes;
+
+                errors = '';
+                for(const[key,value] of Object.entries(entities[index].errors)){
+                    errors += `<div>${key}: ${JSON.stringify(value)}</div>`
+                }
+
+                document.getElementById('entityErrors').innerHTML = errors;
+            }
+
+            baseStyle = {
+                weight: 5,
+                color: '#8286ed',
+                pane: 'mapPane'
+            }
+
+            const resetAllHighlights = () => {
+                entities.forEach((entity) => {
+                    entity.geometry.polygon.setStyle(baseStyle)
+                })
+            }
+
+            const highlightGeometry = (index) => {
+                map.removeLayer(entities[index].geometry.polygon)
+
+                console.log('adding')
+
                 var polygon = L.geoJSON(
                     {
                         "type": "Polygon",
-                        "coordinates": JSON.parse(Geometry)
+                        "coordinates": JSON.parse(entities[index].geometry.area)
+                    }).setStyle({
+                        ...baseStyle,
+                        color: '#FF0000',
+                        pane: 'overlayPane'
                     }).addTo(map);
-                if(outsideUk){
-                    const points = [
-                        [centre_x,centre_y],
-                        [53, -2]
-                    ]
-                    var line = L.polyline(points, {color: 'red'}).addTo(map);
+
+                entities[index].geometry.polygon = polygon
+            }
+
+            const geometry = (area, point, bounds, outsideUK) => {
+                return {
+                    area,
+                    point,
+                    bounds,
+                    outsideUK,
                 }
-                console.log('done');
             }
         </script>
     </head>
@@ -74,15 +133,42 @@
         <div class="main">
             <h1>{{content['title']}}</h1>
             {{content['description'] | safe}}
-            <div>
-                <div>
-                    <div class="table">
-                        {% for row in data %}
-                            {{ tableRow(row) }}
-                        {% endfor %}
-                    </div>
-                </div>
+            <div class="mapControls">
+                <button onclick="changeView(currentIndex + 1)">
+                    Previous entity
+                </button>
+                <div id="entityName">Reference - Name</div>
+                <button onclick="changeView(currentIndex - 1)">
+                    Next entity
+                </button>
             </div>
+            <div id="map-1" style="height: 600px;"></div>
+            <h1>Attributes</h1>
+            <div class='entityAttributes' id="entityAttributes"></div>
+            <h1>Errors</h1>
+            <div class='entityErrors' id="entityErrors"></div>
         </div>
+        <script>
+            const entities = [];
+        </script>
+        <script>
+            {% for row in data %}
+                attributes = '{{row["attributes"]|tojson}}'
+                errors = '{{row["errors"]|tojson}}'
+                entities.push({
+                    geometry: geometry(
+                        "{{row['attributes']['Geometry']}}",
+                        "{{row['attributes']['Point']}}",
+                        "{{row['mapData']['bounds']}}",
+                        "{{row['mapData']['outsideUk']}}"
+                    ),
+                    attributes: JSON.parse(attributes),
+                    errors: JSON.parse(errors)
+                })
+            {% endfor %}
+        </script>
+        <script>
+            initMap()
+        </script>
     </body>
 </html>
