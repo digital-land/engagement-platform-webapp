@@ -33,6 +33,7 @@ init::
 	make piptool-compile
 	make dependencies
 	make npm-dependencies
+	make pre-commit-install
 
 piptool-compile::
 	python -m piptools compile --output-file=requirements/requirements.txt requirements/requirements.in
@@ -44,11 +45,14 @@ dependencies::
 npm-dependencies::
 	npm i
 
+pre-commit-install::
+	pre-commit install
+
 # =============================
 # Linting
 # =============================
 
-lint: 
+lint:
 	make black ./application
 	python3 -m flake8 ./application
 	make jslint
