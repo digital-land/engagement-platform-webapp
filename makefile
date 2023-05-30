@@ -64,12 +64,10 @@ black:
 	python3 -m black .
 
 jslint::
-	npx eslint './application/**/*.js'
-	npx eslint './application/**/*.html'
+	npx eslint --ext .html,.js application
 
 jslint-fix::
-	npx eslint './application/**/*.js' --fix
-	npx eslint './application/**/*.html' --fix
+	npx eslint --ext .html,.js application --fix
 
 # =============================
 # Testing
