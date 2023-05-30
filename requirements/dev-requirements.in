@@ -6,4 +6,4 @@ playwright
 pytest-playwright
 pytest-md-report
 pre-commit
-pyscss
+-e git+https://github.com/digital-land/validators.git@main#egg=epValidators
