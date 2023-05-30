@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from application.routers import validation_router, home
 
+# test change
+
 app = FastAPI()
 
 # add static files
