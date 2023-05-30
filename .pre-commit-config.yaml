@@ -23,4 +23,9 @@ repos:
     rev: ''  # Use the sha / tag you want to point at
     hooks:
     -   id: eslint
-        files: \.(js|html)?$  # *.js, *.jsx, *.ts and *.tsx
+        additional_dependencies:
+        - eslint@^8.41.0
+        - eslint-config-airbnb-base@^15.0.0
+        - eslint-plugin-import@^2.27.5
+        files: \.[jt]sx?$  # *.js, *.jsx, *.ts and *.tsx
+        types: [file]
