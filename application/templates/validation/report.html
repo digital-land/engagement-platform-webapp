@@ -2,20 +2,22 @@
 {% from "mapLeaflet.html" import dlLeafletMap %}
 {% import "macros/banners.html" as banners %}
 
+
+
 <html>
     <head>
-        <link rel="stylesheet" href="/static/stylesheets/application.css">
-        <link rel="stylesheet" href="/static/stylesheets/report.css">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-        crossorigin=""/>
-        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-        crossorigin=""></script>
-        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-        crossorigin=""></script>
-        <script src="/static/javascripts/map.js"></script>
+				<title>{{content['title']}}</title>
+				<meta charset="utf-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+				<link rel="stylesheet" href="/static/stylesheets/application.css">
+				<link rel="stylesheet" href="/static/stylesheets/report.css">
+				<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+				integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+				crossorigin=""/>
+				<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+				integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+				crossorigin=""></script>
+				<script src="/static/javascripts/map.js"></script>
     </head>
     <body>
         {{banners.header()}}
@@ -23,11 +25,11 @@
             <h1>{{content['title']}}</h1>
             {{content['description'] | safe}}
             <div class="mapControls">
-                <button onclick="changeView(currentIndex + 1)">
+                <button onclick="changeView(-1)">
                     Previous entity
                 </button>
                 <div id="entityName">Reference - Name</div>
-                <button onclick="changeView(currentIndex - 1)">
+                <button onclick="changeView(1)">
                     Next entity
                 </button>
             </div>
@@ -38,24 +40,25 @@
             <div class='entityErrors' id="entityErrors"></div>
         </div>
         {% for row in data %}
-            <script>
-                attributes = '{{row["attributes"]|tojson}}';
-                errors = '{{row["errors"]|tojson}}';
-                entities.push({
-                  geometry: geometry(
-                    "{{row['attributes']['Geometry']}}",
-                    "{{row['attributes']['Point']}}",
-                    "{{row['mapData']['bounds']}}",
-                    "{{row['mapData']['outsideUk']}}",
-  ),
-                  attributes: JSON.parse(attributes),
-                  errors: JSON.parse(errors),
-});
-            </script>
+<script>
+/* global entities, geometry */
+const attributes = '{{row["attributes"]|tojson}}'
+const errors = '{{row["errors"]|tojson}}'
+entities.push({
+	geometry: geometry(
+		"{{row['attributes']['Geometry']}}",
+		"{{row['attributes']['Point']}}",
+		"{{row['mapData']['bounds']}}",
+		"{{row['mapData']['outsideUk']}}",
+	),
+	attributes: JSON.parse(attributes),
+	errors: JSON.parse(errors),
+})
+</script>
         {% endfor %}
         <script>
-            const testVar = 'this should fail es linting +1';
-            initMap();
+						/* global initMap */
+						initMap()
         </script>
     </body>
 </html>
