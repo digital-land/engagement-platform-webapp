@@ -18,3 +18,9 @@ repos:
     rev: 5.0.4
     hooks:
     - id: flake8
+
+-   repo: https://github.com/pre-commit/mirrors-eslint
+    rev: ''  # Use the sha / tag you want to point at
+    hooks:
+    -   id: eslint
+        files: \.(js|html)?$  # *.js, *.jsx, *.ts and *.tsx
