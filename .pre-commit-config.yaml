@@ -27,4 +27,5 @@ repos:
         - eslint@^8.41.0
         - eslint-config-airbnb-base@^15.0.0
         - eslint-plugin-import@^2.27.5
+        - eslint-plugin-html@^7.1.0
         files: \.(js|html)?$  # *.js, *.jsx, *.ts and *.tsx
