@@ -11,67 +11,64 @@
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
         crossorigin=""></script>
         <script>
-
             const calculateCentreAndBounds = (point1, point2) => {
-                let x = (parseInt(point1[0]) + parseInt(point2[0])) / 2
-                let y = (parseInt(point1[1]) + parseInt(point2[1])) / 2
+              const x = (parseInt(point1[0]) + parseInt(point2[0])) / 2;
+              const y = (parseInt(point1[1]) + parseInt(point2[1])) / 2;
 
-                let bounds = `[[${point1}], [${point2}]]`
+              const bounds = `[[${point1}], [${point2}]]`;
 
-                return [`[${x},${y}]`, bounds]
-            }
+              return [`[${x},${y}]`, bounds];
+};
 
-            let map;
+let map;
 
-            const initMap = () => {
-                map = L.map('map-1', {
-                    attributionControl: false,
-                    zoomControl: false,
-                    dragging: false,
-                    scrollWheelZoom: 'center'
-                })
+const initMap = () => {
+              map = L.map('map-1', {
+                  attributionControl: false,
+                  zoomControl: false,
+                  dragging: false,
+                  scrollWheelZoom: 'center',
+  });
 
-                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                }).addTo(map);
-                console.log(geometries);
+              L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  maxZoom: 19,
+                  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
+              console.log(geometries);
 
-                for(geom of geometries){
-                    var polygon = L.geoJSON(
-                        {
-                            "type": "Polygon",
-                            "coordinates": JSON.parse(geom.area)
-                        }).addTo(map);
-                }
+              for (geom of geometries) {
+                  const polygon = L.geoJSON(
+      {
+        type: 'Polygon',
+        coordinates: JSON.parse(geom.area),
+      },
+    ).addTo(map);
+              }
 
-                changeView(currentIndex)
-            }
+              changeView(currentIndex);
+};
 
-            let currentIndex = 0;
+let currentIndex = 0;
 
-            const changeView = (index) => {
-                console.log(':: ' + index)
-                if(index >= geometries.length){
-                    index = 0
-                }
-                if(index < 0){
-                    index = geometries.length - 1
-                }
-                console.log('fitting bounds to ' + index)
-                map.fitBounds(JSON.parse(geometries[index].bounds), {animate: true, duration: 0.5})
-                currentIndex = index;
-            }
+const changeView = (index) => {
+              console.log(`:: ${index}`);
+              if (index >= geometries.length) {
+                  index = 0;
+              }
+              if (index < 0) {
+                  index = geometries.length - 1;
+              }
+              console.log(`fitting bounds to ${index}`);
+              map.fitBounds(JSON.parse(geometries[index].bounds), { animate: true, duration: 0.5 });
+              currentIndex = index;
+};
 
-            const geometry = (area, point, bounds, outsideUK) => {
-                return {
-                    area,
-                    point,
-                    bounds,
-                    outsideUK,
-                }
-            }
-
+const geometry = (area, point, bounds, outsideUK) => ({
+  area,
+  point,
+  bounds,
+  outsideUK,
+});
         </script>
     </head>
     <body>
@@ -88,17 +85,17 @@
         {% for row in dataPoints %}
             <script>
                 geometries.push(
-                    geometry(
-                        "{{row['attributes']['Geometry']}}",
-                        "{{row['attributes']['Point']}}",
-                        "{{row['mapData']['bounds']}}",
-                        "{{row['mapData']['outsideUk']}}"
-                    )
-                )
+                  geometry(
+                    "{{row['attributes']['Geometry']}}",
+                    "{{row['attributes']['Point']}}",
+                    "{{row['mapData']['bounds']}}",
+                    "{{row['mapData']['outsideUk']}}",
+  ),
+);
             </script>
         {% endfor %}
         <script>
-            initMap()
+            initMap();
         </script>
     </body>
 </html>
