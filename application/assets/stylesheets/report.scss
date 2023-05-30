@@ -40,3 +40,25 @@
         }
     }
 }
+
+.mapControls {
+    display: flex;
+    justify-content: space-between;
+
+    #entityName {
+        font-size: 2em;
+    }
+}
+
+.entityAttributes {
+    .attribute {
+        max-width: 90%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
+
+.entityErrors {
+
+}
