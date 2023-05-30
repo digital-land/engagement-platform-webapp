@@ -13,9 +13,14 @@ images::
 	rm -R ./application/static/images
 	cp -R ./application/assets/images ./application/static/images
 
+javascripts::
+	rm -R ./application/static/javascripts
+	cp -R ./application/assets/javascripts ./application/static/javascripts
+
 build::
 	make scss
 	make images
+	make javascripts
 
 # build docker image
 
@@ -27,6 +32,7 @@ init::
 	python -m pip install pip-tools
 	make piptool-compile
 	make dependencies
+	make npm-dependencies
 
 piptool-compile::
 	python -m piptools compile --output-file=requirements/requirements.txt requirements/requirements.in
@@ -35,6 +41,9 @@ piptool-compile::
 dependencies::
 	pip-sync requirements/requirements.txt  requirements/dev-requirements.txt
 
+npm-dependencies::
+	npm i
+
 # =============================
 # Linting
 # =============================
@@ -42,12 +51,21 @@ dependencies::
 lint: 
 	make black ./application
 	python3 -m flake8 ./application
+	make jslint
 
 black-check:
 	black --check .
 
 black:
 	python3 -m black .
+
+jslint::
+	npx eslint './application/**/*.js'
+	npx eslint './application/**/*.html'
+
+jslint-fix::
+	npx eslint './application/**/*.js' --fix
+	npx eslint './application/**/*.html' --fix
 
 # =============================
 # Testing
