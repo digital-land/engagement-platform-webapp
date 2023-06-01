@@ -6,7 +6,7 @@ import json
 import pandas as pd
 import shapely.wkt
 from shapely.geometry import mapping
-from main.main import validate_endpoint
+from components.main import validate_endpoint
 import os
 from application.logging.logger import get_logger
 
