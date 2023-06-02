@@ -1,14 +1,12 @@
-from io import StringIO
 from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, File, UploadFile
-from application.core.utils import getPageContent, getPageApiFromTitle
+from application.core.utils import getPageApiFromTitle
 import json
-import pandas as pd
 import shapely.wkt
 from shapely.geometry import mapping
-from components.main import validate_endpoint
+from components.main import validate_endpoint, utils
+from components.models.entity import Entity
 import os
-from application.core.parsers.csvParser import parseCsv
 from application.logging.logger import get_logger
 
 logger = get_logger(__name__)
@@ -36,20 +34,11 @@ def formatData(data):
     return data
 
 
-async def validateFile(file):
-    logger.info("Sending data to validations package..")
-    try:
-        response = await validate_endpoint(file)
-    except Exception as e:
-        logger.error("Unable to validate data from Validation package: %s", str(e))
-    return response
-
-
 @router.get("/")
 @router.get("/upload")
 async def upload(request: Request):
     try:
-        content = await getPageApiFromTitle('upload')
+        content = await getPageApiFromTitle("upload")
     except Exception as e:
         return str(e)
 
@@ -71,24 +60,22 @@ async def upload(request: Request):
 async def uploadFile(request: Request, file: UploadFile = File(...)):
     logger.info("Enter uploadFile method.")
     try:
-        content = await getPageApiFromTitle('report')
+        content = await getPageApiFromTitle("report")
     except Exception as e:
         return str(e)
 
-    file.file.seek(0)
-    contents = file.file.read().decode("utf-8")
+    filepath: str = utils.save_uploaded_file(file)
 
-    data = parseCsv(contents)
+    entity = Entity()
+    data = entity.fetch_data_from_csv(filepath)
 
-    data = formatData(data)
-
-    response = await validateFile(file)
+    response = await validate_endpoint(data)
 
     try:
         response_text = response[0]
         responseData = json.loads(response_text)
     except Exception as e:
-        logger.error("Error in loading response data")
+        logger.error("Error in loading response data: " + e)
 
     if (
         len(responseData["errors"]) == 1
@@ -131,10 +118,7 @@ async def error(request: Request, errorNumber: str):
 @router.get("/testbench")
 async def testbench(request: Request):
     print(os.getcwd())
-    testdata = open('./application/assets/mockdata/testbench.json')
+    testdata = open("./application/assets/mockdata/testbench.json")
     template = "validation/testbench.html"
-    context = {
-        "request": request,
-        "dataPoints": json.loads(testdata.read())
-    }
+    context = {"request": request, "dataPoints": json.loads(testdata.read())}
     return templates.TemplateResponse(template, context)
