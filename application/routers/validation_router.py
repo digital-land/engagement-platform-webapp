@@ -8,6 +8,7 @@ import shapely.wkt
 from shapely.geometry import mapping
 from components.main import validate_endpoint
 import os
+from application.core.parsers.csvParser import parseCsv
 from application.logging.logger import get_logger
 
 logger = get_logger(__name__)
@@ -15,29 +16,6 @@ logger = get_logger(__name__)
 
 templates = Jinja2Templates("application/templates")
 router = APIRouter()
-
-
-def parseCsv(file):
-    data = []
-    try:
-        file.file.seek(0)
-        contents = file.file.read().decode("utf-8")
-
-        csvStringIO = StringIO(contents)
-        dataColumns = pd.read_csv(csvStringIO, sep=",", header=None)
-
-        for index in dataColumns:
-            column = dataColumns[index]
-            for row_i, row_v in enumerate(column):
-                if row_i == 0:
-                    continue
-                if len(data) < row_i:
-                    data.append({"attributes": {}, "mapData": {}, "errors": []})
-                data[row_i - 1]["attributes"][column[0]] = row_v
-    except Exception as e:
-        logger.error("Unable to parse csv file %s", str(e))
-
-    return data
 
 
 def formatData(data):
@@ -97,8 +75,10 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
     except Exception as e:
         return str(e)
 
+    file.file.seek(0)
+    contents = file.file.read().decode("utf-8")
 
-    data = parseCsv(file)
+    data = parseCsv(contents)
 
     data = formatData(data)
 
@@ -109,7 +89,7 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
         responseData = json.loads(response_text)
     except Exception as e:
         logger.error("Error in loading response data")
-    
+
     if (
         len(responseData["errors"]) == 1
         and responseData["errors"][0]["scope"] == "File"

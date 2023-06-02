@@ -20,3 +20,15 @@
           white-space: nowrap; }
           .table .errors .error {
             margin: 0em 0em 1em 1em; }
+
+.mapControls {
+  display: flex;
+  justify-content: space-between; }
+  .mapControls #entityName {
+    font-size: 2em; }
+
+.entityAttributes .attribute {
+  max-width: 90%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; }

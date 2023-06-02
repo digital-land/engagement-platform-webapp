@@ -1,0 +1,20 @@
+{
+  "name": "engagement-platform-webapp",
+  "version": "1.0.0",
+  "description": "## Setup",
+  "main": "./application/app.py",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-html": "^7.1.0",
+    "eslint-plugin-import": "^2.27.5"
+  }
+}
