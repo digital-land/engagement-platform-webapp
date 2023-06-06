@@ -4,10 +4,11 @@ from application.core.utils import getPageApiFromTitle
 import json
 import shapely.wkt
 from shapely.geometry import mapping
-from components.main import validate_endpoint, utils
+from components.main import utils
 from components.models.entity import Entity
 import os
 from application.logging.logger import get_logger
+from application.models.entity_MapData import Entity_MapData
 
 logger = get_logger(__name__)
 
@@ -59,45 +60,32 @@ async def upload(request: Request):
 @router.post("/report")
 async def uploadFile(request: Request, file: UploadFile = File(...)):
     logger.info("Enter uploadFile method.")
-    try:
-        content = await getPageApiFromTitle("report")
-    except Exception as e:
-        return str(e)
 
     filepath: str = utils.save_uploaded_file(file)
 
     entity = Entity()
     data = entity.fetch_data_from_csv(filepath)
 
-    response = await validate_endpoint(data)
+    data = list(map(lambda entry: Entity_MapData(entry), data))
 
+    # try:
+    #     data = await validate_endpoint(data)
+    # except Exception as e:
+    #     # catch file level errors here and render the file level error page
+    #     logger.error("Error validating data: " + e)
+
+    # render the report page
     try:
-        response_text = response[0]
-        responseData = json.loads(response_text)
+        content = await getPageApiFromTitle("report")
     except Exception as e:
-        logger.error("Error in loading response data: " + e)
-
-    if (
-        len(responseData["errors"]) == 1
-        and responseData["errors"][0]["scope"] == "File"
-    ):
-        return responseData["errors"][0]
-
-    for error in responseData["errors"]:
-        data[error["rowNumber"] - 1]["errors"].append(error)
-        if error["errorCode"] == "F003":
-            data[error["rowNumber"] - 1]["mapData"]["outsideUk"] = "true"
-
-    if responseData["status"] == "FAILED":
-        template = "validation/report.html"
-        context = {
-            "request": request,
-            "data": data,
-            "content": content,
-        }
-        return templates.TemplateResponse(template, context)
-    else:
-        return "File Ok"
+        return str(e)
+    template = "validation/report.html"
+    context = {
+        "request": request,
+        "data": list(map(lambda entry: entry.serialize(), data)),
+        "content": content,
+    }
+    return templates.TemplateResponse(template, context)
 
 
 @router.get("/errors/{errorNumber}")
