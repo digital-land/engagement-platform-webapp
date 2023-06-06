@@ -2,8 +2,6 @@ from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, File, UploadFile
 from application.core.utils import getPageApiFromTitle
 import json
-import shapely.wkt
-from shapely.geometry import mapping
 from components.main import utils
 from components.models.entity import Entity
 import os
@@ -15,24 +13,6 @@ logger = get_logger(__name__)
 
 templates = Jinja2Templates("application/templates")
 router = APIRouter()
-
-
-def formatData(data):
-    try:
-        for index, row in enumerate(data):
-            polygon = shapely.wkt.loads(row["attributes"]["Geometry"])
-            polygons = mapping(polygon)["coordinates"]
-            data[index]["attributes"]["Geometry"] = json.dumps(polygons)
-            point = shapely.wkt.loads(row["attributes"]["Point"])
-            data[index]["attributes"]["Point"] = [point.x, point.y]
-            data[index]["mapData"]["bounds"] = [
-                [polygon.bounds[1], polygon.bounds[0]],
-                [polygon.bounds[3], polygon.bounds[2]],
-            ]
-    except Exception as e:
-        logger.error("Unable to format data: %s", str(e))
-
-    return data
 
 
 @router.get("/")
@@ -66,13 +46,13 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
     entity = Entity()
     data = entity.fetch_data_from_csv(filepath)
 
-    data = list(map(lambda entry: Entity_MapData(entry), data))
-
     # try:
     #     data = await validate_endpoint(data)
     # except Exception as e:
     #     # catch file level errors here and render the file level error page
     #     logger.error("Error validating data: " + e)
+
+    data = list(map(lambda entry: Entity_MapData(entry), data))
 
     # render the report page
     try:
