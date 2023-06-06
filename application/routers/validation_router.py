@@ -2,7 +2,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, File, UploadFile
 from application.core.utils import getPageApiFromTitle
 import json
-from components.main import utils
+from components.main import utils, validate_endpoint
 from components.models.entity import Entity
 import os
 from application.logging.logger import get_logger
@@ -46,11 +46,11 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
     entity = Entity()
     data = entity.fetch_data_from_csv(filepath)
 
-    # try:
-    #     data = await validate_endpoint(data)
-    # except Exception as e:
-    #     # catch file level errors here and render the file level error page
-    #     logger.error("Error validating data: " + e)
+    try:
+        data = await validate_endpoint(data)
+    except Exception as e:
+        # catch file level errors here and render the file level error page
+        logger.error("Error validating data: " + e)
 
     data = list(map(lambda entry: Entity_MapData(entry), data))
 

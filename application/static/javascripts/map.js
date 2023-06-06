@@ -1,5 +1,6 @@
 /* global L */
 
+/* exported Map */
 class Map {
 	baseStyle = {
 		weight: 5,
