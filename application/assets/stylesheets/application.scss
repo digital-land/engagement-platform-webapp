@@ -1,3 +1,5 @@
+@import '/application/assets/stylesheets/colors.scss';
+
 body {
     margin: 0px;
 }
@@ -11,8 +13,38 @@ body {
     color: white;
     padding: 0.1em 0.5em;
 
-    h2 {
+    h1 {
         margin: 0px;
+    }
+}
+
+.notification{
+    background-color: $green;
+    color: white;
+    padding: 0.1em 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h2, h3 , h4 {
+        margin: 0px;
+        font-weight: 400;
+    }
+
+    .content {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+
+        .imageContainer {
+            margin: 0.2em 0em;
+            font-size: 400%;
+        }
+    }
+
+    .readMoreLink {
+        justify-self: end;
+        font-size: 1.6em;
+        color: white;
     }
 }
 
@@ -29,6 +61,7 @@ body {
         bottom: 0;
         height: 100%;
         width: 100%;
+
         .image{
             object-fit: cover;
             height: 100%;
@@ -41,18 +74,12 @@ body {
         bottom: 10%;
         left: 10%;
         background-color: white;
+        padding: 0.5em 1em;
         p {
             margin: 5px 5px;
-            font-size: 20px;
+            font-size: 2em;
             font-weight: bolder;
         }
     }
 
 }
-
-.main{
-    margin: 1em 2em;
-}
-
-
-
