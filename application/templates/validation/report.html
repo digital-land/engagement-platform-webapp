@@ -16,6 +16,7 @@
 				integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
 				crossorigin=""></script>
 				<script src="/static/javascripts/map.js"></script>
+                <script src="/static/javascripts/report/report.js"></script>
     </head>
     <body>
         {{banners.header()}}
@@ -23,11 +24,11 @@
             <h1>{{content['title']}}</h1>
             {{content['description'] | safe}}
             <div class="mapControls">
-                <button onclick="changeView(-1)">
+                <button onclick="reportPage.changeViewingEntity(-1)">
                     Previous entity
                 </button>
                 <div id="entityName">Reference - Name</div>
-                <button onclick="changeView(1)">
+                <button onclick="reportPage.changeViewingEntity(1)">
                     Next entity
                 </button>
             </div>
@@ -37,24 +38,10 @@
             <h1>Errors</h1>
             <div class='entityErrors' id="entityErrors"></div>
         </div>
-        {% for row in data %}
-<script>
-/* global entities, geometry */
-entities.push({
-	geometry: geometry(
-		"{{row['attributes']['Geometry']}}",
-		"{{row['attributes']['Point']}}",
-		"{{row['mapData']['bounds']}}",
-		"{{row['mapData']['outsideUk']}}",
-	),
-	attributes: JSON.parse('{{row["attributes"]|tojson}}'),
-	errors: JSON.parse('{{row["errors"]|tojson}}'),
-})
-</script>
-        {% endfor %}
         <script>
-            /* global initMap */
-            initMap()
+            const entities = {{ data | safe }}
+            /* global ReportPage */
+            const reportPage = new ReportPage(entities)
         </script>
     </body>
 </html>
