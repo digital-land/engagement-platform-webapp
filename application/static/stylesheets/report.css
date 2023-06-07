@@ -22,10 +22,14 @@
   .errorList th, .errorList td {
     padding: 0.5em 0em; }
 
-.errorRow--heading {
-  text-align: left;
-  font-weight: bold;
-  margin-bottom: 0.5em; }
+.errorRow {
+  cursor: pointer; }
+  .errorRow:hover {
+    background-color: #CCCCCC; }
+    .errorRow--heading {
+      text-align: left;
+      font-weight: bold;
+      margin-bottom: 0.5em; }
 
 .table {
   border: solid black 2px; }
@@ -50,7 +54,7 @@
 
 .mapContainer {
   position: sticky;
-  top: 0;
+  top: 10px;
   margin-bottom: 1em; }
   .mapContainer .mapControl {
     position: absolute;

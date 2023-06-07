@@ -43,6 +43,12 @@
 
 .errorRow {
 
+    cursor: pointer;
+
+    &:hover {
+        background-color: #CCCCCC;
+    }
+
     &--heading{
         text-align: left;
         font-weight: bold;
@@ -91,7 +97,7 @@
 
 .mapContainer {
     position: sticky;
-    top: 0;
+    top: 10px;
     margin-bottom: 1em;
 
     .mapControl {
