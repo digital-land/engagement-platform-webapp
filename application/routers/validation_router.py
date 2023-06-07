@@ -1,12 +1,11 @@
 from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, File, UploadFile
 from application.core.utils import getPageApiFromTitle
-import json
-from components.main import utils, validate_endpoint
+from components.validation import validate_endpoint
+from components import utils
 from components.models.entity import Entity
-import os
-from application.logging.logger import get_logger
 from application.models.entity_MapData import Entity_MapData
+from application.logging.logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -44,10 +43,10 @@ async def uploadFile(request: Request, file: UploadFile = File(...)):
     filepath: str = utils.save_uploaded_file(file)
 
     entity = Entity()
-    data = entity.fetch_data_from_csv(filepath)
+    dataRaw = entity.fetch_data_from_csv(filepath)
 
     try:
-        data = await validate_endpoint(data)
+        data = validate_endpoint(dataRaw)
     except Exception as e:
         # catch file level errors here and render the file level error page
         logger.error("Error validating data: " + e)
@@ -80,13 +79,4 @@ async def error(request: Request, errorNumber: str):
         "request": request,
         "content": content,
     }
-    return templates.TemplateResponse(template, context)
-
-
-@router.get("/testbench")
-async def testbench(request: Request):
-    print(os.getcwd())
-    testdata = open("./application/assets/mockdata/testbench.json")
-    template = "validation/testbench.html"
-    context = {"request": request, "dataPoints": json.loads(testdata.read())}
     return templates.TemplateResponse(template, context)
