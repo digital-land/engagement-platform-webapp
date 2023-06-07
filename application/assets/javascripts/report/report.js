@@ -12,40 +12,53 @@ class ReportPage {
 		this.htmlElements.entityName = document.getElementById('entityName')
 		this.htmlElements.entityAttributes = document.getElementById('entityAttributes')
 		this.htmlElements.entityErrors = document.getElementById('entityErrors')
+		this.htmlElements.errorsList = document.getElementById('errorListBody')
 
-		this.changeViewingEntity(0)
+		// this.changeViewingEntity(0)
+		this.addErrorsToPage()
+		this.centerMap()
 	}
 
-	changeViewingEntity = (deltaIndex) => {
-		let newIndex = this.currentEntityIndex + deltaIndex
-		if (newIndex >= this.entities.length) {
-			newIndex = 0
-		}
-		if (newIndex < 0) {
-			newIndex = this.entities.length - 1
-		}
-		this.currentEntityIndex = newIndex
-		const entity = this.entities[newIndex]
-		this.changeDetails(entity)
-		this.map.changeView(entity)
+	addErrorsToPage = () => {
+		this.entities.forEach((entity) => {
+			entity.attributes.errors.forEach((error) => {
+				this.addErrorToErrorsList(error, entity)
+			})
+		})
 	}
 
-	changeDetails = (entity) => {
-		this.htmlElements.entityName.innerHTML = `${entity.attributes.Reference} - ${entity.attributes.Name}`
-		let attributes = ''
-		Object.entries(entity.attributes).forEach(([key, value]) => {
-			attributes += `<div class='attribute ${key.replace(' ', '_')}'>${key}: ${value}</div>`
+	addErrorToErrorsList = (error, entity) => {
+		const tr = document.createElement('tr')
+		tr.className = 'errorRow'
+		tr.onclick = () => {
+			this.map.changeView(entity)
+		}
+		tr.innerHTML = `
+			<td>${entity.attributes.Reference}</td>
+			<td>${error.errorMessage}</td>
+			<td>${error.columnNames}</td>
+		    <td><a href='errors/${error.errorCode}'>More Info</a></td>
+		`
+
+		this.htmlElements.errorsList.appendChild(tr)
+	}
+
+	centerMap = () => {
+		let bounds = [[-180, -90], [180, 90]]
+
+		this.entities.forEach((entity) => {
+			bounds = [
+				[
+					Math.max(bounds[0][0], entity.mapData.bounds[0][0]),
+					Math.max(bounds[0][1], entity.mapData.bounds[0][1]),
+				],
+				[
+					Math.min(bounds[1][0], entity.mapData.bounds[1][0]),
+					Math.min(bounds[1][1], entity.mapData.bounds[1][1]),
+				],
+			]
 		})
 
-		this.htmlElements.entityAttributes.innerHTML = attributes
-
-		if (entity.errors) {
-			let errors = ''
-			Object.entries(entity.errors).forEach(([key, value]) => {
-				errors += `<div class='errors ${key.replace(' ', '_')}'>${key}: ${value}</div>`
-			})
-
-			this.htmlElements.entityErrors.innerHTML = errors
-		}
+		this.map.map.fitBounds(bounds)
 	}
 }

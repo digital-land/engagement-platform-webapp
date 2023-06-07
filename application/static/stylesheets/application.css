@@ -1,12 +1,15 @@
 body {
   margin: 0px; }
 
-  .header {
-    background-color: black;
-    color: white;
-    padding: 0.1em 0.5em; }
-    .header h1 {
-      margin: 0px; }
+  .main {
+    margin: 1em 10em; }
+
+    .header {
+      background-color: black;
+      color: white;
+      padding: 0.1em 0.5em; }
+      .header h1 {
+        margin: 0px; }
 
 .notification {
   background-color: #0F766E;

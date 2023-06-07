@@ -1,5 +1,4 @@
 .main {
-  margin: 1em 10em;
   display: grid;
   grid-template-areas: "mainContent mainContent mainContent pageNav" "mainContent mainContent mainContent dataSummary" "mainContent mainContent mainContent leagueTable";
   gap: 1em 4em; }
