@@ -3,7 +3,7 @@
 {% import "macros/banners.html" as banners %}
 
 {% block headScripts %}
-
+<script src="../../../static/javascripts/upload/upload.js"></script>
 {% endblock %}
 
 {% block bodyContent %}
@@ -34,19 +34,19 @@
                 <h2>Link your data</h2>
                 <p>The dataset is checked to determine whether it meets the data standard.</p>
                 <div>
-                    <input type="radio" id="dataset" name="gDrive" value="gDrive" disabled>
+                    <input type="radio" name="dataset" id="gDrive" value="gDrive" disabled>
                     <label for="dataset">G drive</label>
-                    <input type="radio" id="dataset" name="arcGis" value="arcGis" disabled>
+                    <input type="radio" name="dataset" id="arcGis" value="arcGis">
                     <label for="dataset">ArcGis</label>
-                    <input type="radio" id="dataset" name="qGis" value="qGis" disabled>
+                    <input type="radio" name="dataset" id="qGis" value="qGis" disabled>
                     <label for="dataset">QGis</label>
-                    <input type="radio" id="dataset" name="uploadFile" value="uploadFile">
+                    <input type="radio" name="dataset" id="uploadFile" value="uploadFile">
                     <label for="dataset">Upload file</label>
                 </div>
             </div>
             <div></div>
         </div>
-        <div class="section" id="uploadAFile">
+        <div class="section" id="uploadAFile"  style="display: none;">
             <div></div>
             <div>
                 <h2>Upload a file of conservation area data</h2>
@@ -56,6 +56,16 @@
                 </div>
                 <div></div>
             </div>
+            <div class="section" id="arcgisLink"  style="display: none;">
+                <div></div>
+                <div>
+                    <h2>Upload Arcgis link to a conservation area data</h2>
+                    <p>Enter the link:</p>
+                        <input type="link" id="link" name="link">
+                        <input type="submit">
+                    </div>
+                    <div></div>
+                </div>
         </div>
     </form>
 </div>
