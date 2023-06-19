@@ -18,7 +18,11 @@ def convertScssInFolder(folder):
                 print("scss")
                 with open(os.path.join(folder, filename), "r") as file:
                     scss_code = file.read()
-                    css_code = scss.compile(scss_code)
+                    try:
+                        css_code = scss.compile(scss_code)
+                    except Exception as e:
+                        print(f"Failed to compile: {filename} with error: {e}")
+                        raise e
 
                 staticFolderPath = folder.replace("assets", "static")
                 cssFilename = filename.replace("scss", "css")

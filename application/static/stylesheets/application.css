@@ -1,12 +1,37 @@
 body {
   margin: 0px; }
 
-  .header {
-    background-color: black;
-    color: white;
-    padding: 0.1em 0.5em; }
-    .header h2 {
-      margin: 0px; }
+  .main {
+    margin: 1em 10em; }
+
+    .header {
+      background-color: black;
+      color: white;
+      padding: 0.1em 0.5em; }
+      .header h1 {
+        margin: 0px; }
+
+.notification {
+  background-color: #0F766E;
+  color: white;
+  padding: 0.1em 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; }
+  .notification h2, .notification h3, .notification h4 {
+    margin: 0px;
+    font-weight: 400; }
+    .notification .content {
+      display: flex;
+      align-items: center;
+      gap: 1em; }
+      .notification .content .imageContainer {
+        margin: 0.2em 0em;
+        font-size: 400%; }
+  .notification .readMoreLink {
+    justify-self: end;
+    font-size: 1.6em;
+    color: white; }
 
 .welcome {
   position: relative;
@@ -28,11 +53,9 @@ body {
     position: absolute;
     bottom: 10%;
     left: 10%;
-    background-color: white; }
+    background-color: white;
+    padding: 0.5em 1em; }
     .welcome .message p {
       margin: 5px 5px;
-      font-size: 20px;
+      font-size: 2em;
       font-weight: bolder; }
-
-.main {
-  margin: 1em 2em; }

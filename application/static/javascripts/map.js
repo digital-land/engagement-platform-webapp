@@ -45,29 +45,12 @@ class Map {
 	}
 
 	changeView = (entity) => {
-		// if (entities[newIndex].geometry.outsideUK) {
-		// 	const point = JSON.parse(entities[newIndex].geometry.point)
-		// 	const [, bounds] = calculateCentreAndBounds(
-		// 		[
-		// 			point[1],
-		// 			point[0],
-		// 		],
-		// 		[
-		// 			52,
-		// 			-2,
-		// 		],
-		// 	)
-		// 	console.log(`fitting bounds to mid point of line ${newIndex}`)
-		// 	map.fitBounds(JSON.parse(bounds), { animate: true, duration: 0.5 })
-		// }
-		// else {
 		console.log(`fitting bounds to ${entity.attributes.Name} (${entity.mapData.bounds})`)
 		if (!entity.mapData.bounds) {
 			this.map.fitWorld()
 		} else {
 			this.map.fitBounds(entity.mapData.bounds, { animate: true, duration: 0.5 })
 		}
-		// }
 		this.resetAllHighlights()
 		this.highlightGeometry(entity)
 	}

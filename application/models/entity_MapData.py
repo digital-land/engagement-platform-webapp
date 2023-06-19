@@ -28,9 +28,10 @@ class Entity_MapData(Entity):
 
         # convert the xy coordinates to lat/long
         try:
-            point = shapely.wkt.loads(self.Point)
-            self.Point = [point.x, point.y]
-            self.shapely["point"] = point
+            if self.Point is not None:
+                point = shapely.wkt.loads(self.Point)
+                self.Point = [point.x, point.y]
+                self.shapely["point"] = point
         except Exception as e:
             print("Unable to load point: %s", str(e))
 

@@ -1,19 +1,72 @@
+{% extends "base/base.html" %}
+
 {% import "macros/banners.html" as banners %}
 
-<html>
-    <head>
-        <link rel="stylesheet" href="/static/stylesheets/application.css">
-    </head>
-    <body>
-        {{banners.header()}}
-        {{banners.welcome()}}
-        <div class="main">
-            <h1>{{content['title'] | safe}}</h1>
-            {{content['description'] | safe}}
-            <form action="report" method="POST" enctype="multipart/form-data">
-                <input type="file" id="file" name="file">
-                <input type="submit">
-            </form>
+{% block headScripts %}
+<script src="../../../static/javascripts/upload/upload.js"></script>
+{% endblock %}
+
+{% block bodyContent %}
+{{banners.header()}}
+<div class="main">
+    <div class="cookie-crumbs">
+        <a href="/">Dashboard</a> > <a href="#">Check your data</a> > <a href="#">Upload</a>
+    </div>
+    <form action="report" method="POST" enctype="multipart/form-data">
+        <div class="section" id="selectDataType">
+            <div>
+                <p>Plymouth City Council</p>
+                <h2>Select data type</h2>
+                <p>What type of data are you checking?</p>
+                <div>
+                    <input type="radio" id="dataset" name="conservationArea" value="conservationArea">
+                    <label for="dataset">Conservation area</label>
+                    <input type="radio" id="dataset" name="treePreservation" value="treePreservation" disabled>
+                    <label for="dataset">Tree preservation order</label>
+                    <input type="radio" id="dataset" name="permittedDevelopment" value="permittedDevelopment" disabled>
+                    <label for="dataset">Permitted development</label>
+                </div>
+            </div>
         </div>
-    </body>
-</html>
+        <div class="section" id="linkYourData">
+            <div></div>
+            <div>
+                <h2>Link your data</h2>
+                <p>The dataset is checked to determine whether it meets the data standard.</p>
+                <div>
+                    <input type="radio" name="dataset" id="gDrive" value="gDrive" disabled>
+                    <label for="dataset">G drive</label>
+                    <input type="radio" name="dataset" id="arcGis" value="arcGis">
+                    <label for="dataset">ArcGis</label>
+                    <input type="radio" name="dataset" id="qGis" value="qGis" disabled>
+                    <label for="dataset">QGis</label>
+                    <input type="radio" name="dataset" id="uploadFile" value="uploadFile">
+                    <label for="dataset">Upload file</label>
+                </div>
+            </div>
+            <div></div>
+        </div>
+        <div class="section" id="uploadAFile"  style="display: none;">
+            <div></div>
+            <div>
+                <h2>Upload a file of conservation area data</h2>
+                <p>Upload a file or drag and drop it here:</p>
+                    <input type="file" id="file" name="file">
+                    <input type="submit">
+                </div>
+                <div></div>
+            </div>
+            <div class="section" id="arcgisLink"  style="display: none;">
+                <div></div>
+                <div>
+                    <h2>Upload Arcgis link to a conservation area data</h2>
+                    <p>Enter the link:</p>
+                        <input type="link" id="link" name="link">
+                        <input type="submit">
+                    </div>
+                    <div></div>
+                </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

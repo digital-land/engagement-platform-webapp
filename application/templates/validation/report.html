@@ -1,47 +1,63 @@
+{% extends "base/base.html" %}
+
 {% from "tableRow.html" import tableRow %}
 {% from "mapLeaflet.html" import dlLeafletMap %}
 {% import "macros/banners.html" as banners %}
 
-<html>
-    <head>
-				<title>{{content['title']}}</title>
-				<meta charset="utf-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1">
-				<link rel="stylesheet" href="/static/stylesheets/application.css">
-				<link rel="stylesheet" href="/static/stylesheets/report.css">
-				<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-				integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-				crossorigin=""/>
-				<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-				integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-				crossorigin=""></script>
-				<script src="/static/javascripts/map.js"></script>
-                <script src="/static/javascripts/report/report.js"></script>
-    </head>
-    <body>
-        {{banners.header()}}
-        <div class="main">
-            <h1>{{content['title']}}</h1>
-            {{content['description'] | safe}}
-            <div class="mapControls">
-                <button onclick="reportPage.changeViewingEntity(-1)">
-                    Previous entity
-                </button>
-                <div id="entityName">Reference - Name</div>
-                <button onclick="reportPage.changeViewingEntity(1)">
-                    Next entity
-                </button>
-            </div>
-            <div id="map-1" style="height: 600px;"></div>
-            <h1>Attributes</h1>
-            <div class='entityAttributes' id="entityAttributes"></div>
-            <h1>Errors</h1>
-            <div class='entityErrors' id="entityErrors"></div>
+{% block headScripts %}
+    <link rel="stylesheet" href="/static/stylesheets/application.css">
+    <link rel="stylesheet" href="/static/stylesheets/report.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
+    <script src="/static/javascripts/map.js"></script>
+    <script src="/static/javascripts/report/report.js"></script>
+{% endblock %}
+
+{% block bodyContent %}
+    {{banners.header()}}
+    <div class="main">
+        <div class="cookie-crumbs">
+            <a href="/">Dashboard</a> > <a href="#">Check your data</a> > <a href="#">Validate</a>
         </div>
-        <script>
-            const entities = {{ data | safe }}
-            /* global ReportPage */
-            const reportPage = new ReportPage(entities)
-        </script>
-    </body>
-</html>
+        <p>Plymouth City Council</p>
+        <h1>Validate the conservation area data</h1>
+        <div class="summary">
+            <div class="summary__item summary__item--green">
+                <div class="summary__item__Number" id="totalEntriesView">112</div>
+                <div class="summary__item__label">Total entries</div>
+            </div>
+            <div class="summary__item summary__item--red">
+                <div class="summary__item__Number" id="totalIssuesView">12</div>
+                <div class="summary__item__label">Total entries</div>
+            </div>
+            <div class="summary__item summary__item--blue">
+                <div class="summary__item__Number" id="totalIssuesView">90%</div>
+                <div class="summary__item__label">Aligned</div>
+            </div>
+        </div>
+        <div class="mapContainer">
+            <div id="map-1" style="height: 600px;" class="map"></div>
+            <button onclick="reportPage.centerMap()" class="mapControl">Reset Map</button>
+        </div>
+        <h1>Errors list</h1>
+        <table class="errorList" id="errorList">
+            <tbody id="errorListBody" class="errorListBody">
+                <tr class="errorRow--heading">
+                    <th>Reference</th>
+                    <th>Error Message</th>
+                    <th>Column Names</th>
+                    <th>Action</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const entities = {{ data | safe }}
+        /* global ReportPage */
+        const reportPage = new ReportPage(entities)
+    </script>
+{% endblock %}

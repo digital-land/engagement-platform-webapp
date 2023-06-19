@@ -1,27 +1,130 @@
+{% extends "base/base.html" %}
+
 {% import "macros/banners.html" as banners %}
 
-<html>
-    <head>
-        <link rel="stylesheet" href="/static/stylesheets/application.css">
-        <link rel="stylesheet" href="/static/stylesheets/home.css">
-    </head>
-    <body>
-        {{banners.header()}}
-        {{banners.notification()}}
-        {{banners.welcome()}}
-        <div class="main">
-            <div class="section">
-                <div>
-                    <h4>Check your data</h4>
-                    <p>Find out if your data meets the standards set by DLUHC and get recommendations on how to improve your data.</p>
-                    <a href="/validation/upload">
-                        Start now
-                    </a>
-                </div>
-                <div>
+{% block headScripts %}
+    <link rel="stylesheet" href="/static/stylesheets/home.css">
+{% endblock %}
 
+{% block bodyContent %}
+    {{banners.header()}}
+    {{banners.notification()}}
+    {{banners.welcome()}}
+    <div class="main">
+        <div class="mainContent">
+            <p class="notice">New data was last collected on 13th March 2023</p>
+            <div class="linkBlock">
+                <h2 class="title">Check your data</h2>
+                <div class="contentContainer">
+                    <div class="content">
+                        <p>Find out if your data meets the standards set by DLUHC and get recommendations on how to improve your data.</p>
+                        <a href="/validation/upload" class="button">
+                            Start now
+                        </a>
+                    </div>
+                    <div class="thumbnail">
+                        <i class="thumbnailIcon fa-solid fa-list-check"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="linkBlock">
+                <h2 class="title">Read the data standards</h2>
+                <div class="contentContainer">
+                    <div class="content">
+                        <p>Find out the data standards you need to meet.</p>
+                        <a href="#" class="button">
+                            Find out more
+                        </a>
+                    </div>
+                    <div class="thumbnail">
+                        <i class="thumbnailIcon fa-solid fa-book"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="linkBlock">
+                <h2 class="title">Education</h2>
+                <div class="contentContainer">
+                    <div class="content">
+                        <p>GIS Lesson 1 of 3</p>
+                        <a href="#" class="button">
+                            Start
+                        </a>
+                    </div>
+                    <div class="thumbnail">
+                        <i class="thumbnailIcon fa-solid fa-graduation-cap"></i>
+                    </div>
                 </div>
             </div>
         </div>
-    </body>
-</html>
+        <div class="pageNav">
+            <div class="item">
+                <img class="icon">
+                <div class="title">Notifications</div>
+                <div class="notificationCount">
+                    1
+                </div>
+            </div>
+            <div class="item">
+                <img class="icon">
+                <div class="title">Notifications</div>
+                <div class="notificationCount">
+                    1
+                </div>
+            </div>
+            <div class="item">
+                <img class="icon">
+                <div class="title">Notifications</div>
+                <div class="notificationCount">
+                    1
+                </div>
+            </div>
+            <div class="item">
+                <img class="icon">
+                <div class="title">Notifications</div>
+                <div class="notificationCount">
+                    1
+                </div>
+            </div>
+        </div>
+        <div class="dataSummary">
+            <h2>Your data summary</h2>
+            <div class="items">
+                <div class="item" style="background-color: grey; color: black">
+                    <div class="content" >12 Datasets checked</div>
+                </div>
+                <div class="item" style="background-color: black;">
+                    <div class="content">2/5 Reviewed standards</div>
+                </div>
+                <div class="item" style="background-color: red;">
+                    <div class="content" >2 Unresolved issues</div>
+                </div>
+                <div class="item" style="background-color: green;">
+                    <div class="content" >1 Resolved Issue</div>
+                </div>
+            </div>
+        </div>
+        <div class="leagueTable">
+            <h2>Area league table</h2>
+            <div class="tableRow">
+                <div class="number">1</div>
+                <div class="name">North Devon</div>
+                <div class="Entities">1402</div>
+            </div>
+            <div class="tableRow">
+                <div class="number">2</div>
+                <div class="name">South Devon</div>
+                <div class="Entities">1200</div>
+            </div>
+            <div class="tableRow">
+                <div class="number">3</div>
+                <div class="name">Cornwall</div>
+                <div class="Entities">899</div>
+            </div>
+            <div class="tableRow">
+                <div class="number">4</div>
+                <div class="name">Dartmoor</div>
+                <div class="Entities">773</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

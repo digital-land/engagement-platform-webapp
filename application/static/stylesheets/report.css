@@ -1,25 +1,70 @@
+.summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em; }
+  .summary .summary__item {
+    background-color: green;
+    padding: 1em 2em;
+    color: white; }
+    .summary .summary__item .summary__item__Number {
+      font-size: 2em;
+      font-weight: bolder; }
+      .summary .summary__item--red {
+        background-color: red; }
+        .summary .summary__item--green {
+          background-color: green; }
+          .summary .summary__item--blue {
+            background-color: blue; }
+
+.errorList {
+  width: 100%; }
+  .errorList th, .errorList td {
+    padding: 0.5em 0em; }
+
+.errorRow {
+  cursor: pointer; }
+  .errorRow:hover {
+    background-color: #CCCCCC; }
+    .errorRow--heading {
+      text-align: left;
+      font-weight: bold;
+      margin-bottom: 0.5em; }
+
 .table {
   border: solid black 2px; }
   .table .table-row {
     padding: 1em;
     border-bottom: solid black 1px; }
-    .table .map {
-      margin-bottom: 1em; }
-      .table .attribute {
+    .table .attribute {
+      display: block;
+      width: 500px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap; }
+      .table .errors {
+        color: red;
         display: block;
         width: 500px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap; }
-        .table .errors {
-          color: red;
-          display: block;
-          width: 500px;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap; }
-          .table .errors .error {
-            margin: 0em 0em 1em 1em; }
+        .table .errors .error {
+          margin: 0em 0em 1em 1em; }
+
+.mapContainer {
+  top: 10px;
+  margin-bottom: 1em; }
+  .mapContainer .mapControl {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    font-size: 1.6em; }
 
 .mapControls {
   display: flex;

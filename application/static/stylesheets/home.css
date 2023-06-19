@@ -1,7 +1,89 @@
-.notification {
-  background-color: #0F766E;
-  color: white;
-  padding: 0.1em 1em; }
-  .notification h3, .notification h4 {
-    margin: 0px;
-    font-weight: 400; }
+.main {
+  display: grid;
+  grid-template-areas: "mainContent mainContent mainContent pageNav" "mainContent mainContent mainContent dataSummary" "mainContent mainContent mainContent leagueTable";
+  gap: 1em 4em; }
+  .main .mainContent {
+    grid-area: mainContent; }
+    .main .mainContent .linkBlock {
+      margin-bottom: 5em; }
+      .main .mainContent .linkBlock .title {
+        font-size: 2.5em;
+        font-weight: 700;
+        margin: 0px; }
+        .main .mainContent .linkBlock .contentContainer {
+          display: grid;
+          grid-template-columns: 4fr 1fr;
+          gap: 1em; }
+          .main .mainContent .linkBlock .contentContainer .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; }
+            .main .mainContent .linkBlock .contentContainer .content p {
+              font-size: 1.5em; }
+              .main .mainContent .linkBlock .contentContainer .content .button {
+                text-decoration: none;
+                color: white;
+                background-color: #0F766E;
+                padding: 0.2em 1em;
+                max-width: 150px;
+                text-align: center;
+                font-size: 1.5em; }
+          .main .mainContent .linkBlock .contentContainer .thumbnail .thumbnailIcon {
+            background-color: #EEEEEE;
+            font-size: 400%;
+            padding: 50px; }
+
+.pageNav {
+  margin-top: 1em;
+  grid-area: pageNav;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; }
+  .pageNav .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #EEEEEE;
+    padding: 0.5em 1em; }
+    .pageNav .item .notificationCount {
+      background-color: red;
+      border-radius: 50%;
+      padding: 0.1em 0.5em; }
+
+.dataSummary {
+  grid-area: dataSummary;
+  border: solid 2px #DDDDDD;
+  padding: 1em; }
+  .dataSummary h2 {
+    text-align: center; }
+    .dataSummary .items {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1em;
+      justify-items: center; }
+      .dataSummary .items .item {
+        border-radius: 50%;
+        width: 100px;
+        height: 100px; }
+        .dataSummary .items .item .content {
+          text-align: center;
+          margin: 1em;
+          color: white; }
+
+.leagueTable {
+  grid-area: leagueTable;
+  border: solid 2px #DDDDDD;
+  padding: 1em; }
+  .leagueTable h2 {
+    text-align: center; }
+    .leagueTable .tableRow {
+      padding: 0.2em 0em;
+      display: grid;
+      grid-template-columns: 1fr 3fr 1fr;
+      justify-content: center; }
+      .leagueTable .tableRow .number {
+        align-self: right; }
+        .leagueTable .tableRow .name {
+          align-self: left; }
+          .leagueTable .tableRow .Entities {
+            align-self: right; }
